@@ -161,59 +161,27 @@
                 }
             }
             
-            // Try to get from content element with data-product-id attribute
-            const contentEl = $('.content[data-product-id]');
-            if (contentEl.length) {
-                const contentProductId = contentEl.attr('data-product-id');
-                if (contentProductId) {
-                    return contentProductId;
-                }
-            }
-            
             return match ? match[1] : null;
         }
 
         getData() {
             debug('Getting data for product ID: ' + this.productId);
-            
-            // First, get initial and current stock from the debug info div
-            const debugInfoEl = $('.stock-debug-info');
-            if (debugInfoEl.length) {
-                const initialStockText = debugInfoEl.find('p:contains("Initial Stock")').text();
-                const currentStockText = debugInfoEl.find('p:contains("Current Stock")').text();
-                
-                const initialStockMatch = initialStockText.match(/Initial Stock:\s*(\d+)/);
-                const currentStockMatch = currentStockText.match(/Current Stock:\s*(\d+)/);
-                
-                if (initialStockMatch && initialStockMatch[1]) {
-                    this.initialStock = parseInt(initialStockMatch[1], 10);
-                }
-                
-                if (currentStockMatch && currentStockMatch[1]) {
-                    this.currentStock = parseInt(currentStockMatch[1], 10);
-                }
-                
-                debug('Found stock data in DOM: Initial=' + this.initialStock + ', Current=' + this.currentStock);
-            }
 
-            // Now get reserved dates using the rental datepicker endpoint
             $.ajax({
                 url: wc_add_to_cart_params.ajax_url,
                 method: 'POST',
                 data: {
-                    action: 'get_booked_dates',  // Using the working endpoint
+                    action: 'get_stock_debug_info',
                     product_id: this.productId,
-                    nonce: wc_add_to_cart_params.ajax_nonce || ''  // Just use WooCommerce nonce if available
+                    nonce: wc_add_to_cart_params.ajax_nonce
                 },
                 success: (response) => {
                     if (response.success) {
                         debug('Data received successfully');
-                        
-                        // Process the booked dates from the rental datepicker response
-                        if (response.data && response.data.booked_dates) {
-                            // Transform the data to match our expected format
-                            this.processBookedDates(response.data.booked_dates);
-                        }
+                        this.initialStock = parseInt(response.data.initial_stock, 10) || 0;
+                        this.currentStock = parseInt(response.data.current_stock, 10) || 0;
+                        this.reservedDates = Array.isArray(response.data.reserved_dates) ? response.data.reserved_dates : [];
+                        this.bufferDates = Array.isArray(response.data.buffer_dates) ? response.data.buffer_dates : [];
                         
                         this.updateUI();
                     } else {
@@ -225,88 +193,6 @@
                     console.error('Stock debugger AJAX error:', xhr.responseText);
                 }
             });
-        }
-        
-        processBookedDates(bookedDates) {
-            if (!Array.isArray(bookedDates) || bookedDates.length === 0) {
-                debug('No booked dates found');
-                return;
-            }
-            
-            debug('Processing ' + bookedDates.length + ' booked dates');
-            
-            // Group dates by order ID if possible
-            const datesByOrder = {};
-            const processedDates = [];
-            
-            // Check for dates that look like they have order data
-            const hasOrderData = bookedDates.some(date => typeof date === 'object' && date.order_id);
-            
-            if (hasOrderData) {
-                // Process dates that have order data
-                this.reservedDates = bookedDates.map(date => {
-                    return {
-                        start_date: date.start_date || date.date,
-                        end_date: date.end_date || date.date,
-                        qty: date.qty || 1,
-                        order_id: date.order_id || 'N/A',
-                        status: date.status || 'booked'
-                    };
-                });
-            } else {
-                // Process simple date strings (YYYY-MM-DD)
-                // Group consecutive dates as ranges
-                let currentRange = null;
-                
-                // Sort dates chronologically
-                bookedDates.sort();
-                
-                for (let i = 0; i < bookedDates.length; i++) {
-                    const currentDate = bookedDates[i];
-                    
-                    // Skip if we've already processed this date
-                    if (processedDates.includes(currentDate)) continue;
-                    
-                    processedDates.push(currentDate);
-                    
-                    if (!currentRange) {
-                        currentRange = {
-                            start_date: currentDate,
-                            end_date: currentDate,
-                            qty: 1,
-                            order_id: 'N/A',
-                            status: 'booked'
-                        };
-                    } else {
-                        // Check if this date is consecutive with the current range
-                        const lastDate = new Date(currentRange.end_date);
-                        const nextDay = new Date(lastDate);
-                        nextDay.setDate(nextDay.getDate() + 1);
-                        
-                        if (currentDate === formatDate(nextDay)) {
-                            // Extend the current range
-                            currentRange.end_date = currentDate;
-                        } else {
-                            // Start a new range
-                            this.reservedDates.push(currentRange);
-                            currentRange = {
-                                start_date: currentDate,
-                                end_date: currentDate,
-                                qty: 1,
-                                order_id: 'N/A',
-                                status: 'booked'
-                            };
-                        }
-                    }
-                }
-                
-                // Add the last range if it exists
-                if (currentRange) {
-                    this.reservedDates.push(currentRange);
-                }
-            }
-            
-            debug('Processed ' + this.reservedDates.length + ' reservation entries');
         }
 
         bindEvents() {

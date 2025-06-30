@@ -54,8 +54,9 @@ class Stock_Debugger {
             );
             
             // Enqueue scripts
-            wp_enqueue_script('mitnafun-stock-debugger', plugin_dir_url(__FILE__) . 'assets/js/stock-debugger.js', array('jquery'), '1.0.1', true);
-            wp_enqueue_script('mitnafun-stock-debugger-collapsible', plugin_dir_url(__FILE__) . 'assets/js/stock-debugger-collapsible.js', array('jquery'), '1.0.0', true);
+            wp_enqueue_script('stock-debugger-collapsible', plugin_dir_url(__FILE__) . 'assets/js/stock-debugger-collapsible.js', array('jquery'), '1.0.0', true);
+            wp_enqueue_script('stock-debugger', plugin_dir_url(__FILE__) . 'assets/js/stock-debugger.js', array('jquery'), '1.0.1', true);
+            wp_enqueue_script('stock-debugger-debug-log', plugin_dir_url(__FILE__) . 'assets/js/stock-debugger-debug-log.js', array('jquery', 'stock-debugger'), '1.0.0', true);
             
             // Get product stock
             $stock = $this->get_current_stock();
@@ -607,7 +608,7 @@ class Stock_Debugger {
               AND oim2.meta_key IS NOT NULL
               AND oim2.meta_value = %d
               AND p.post_type = 'shop_order'
-              AND p.post_status = 'wc-processing'
+              AND p.post_status IN ('wc-processing', 'wc-on-hold', 'wc-pending', 'wc-completed', 'wc-rental-confirmed')
             ORDER BY p.ID DESC, oi.order_item_id",
             $product_id
         );
@@ -669,9 +670,32 @@ class Stock_Debugger {
                     $formatted_start = trim($date_range[0]);
                     $formatted_end = trim($date_range[1]);
                     
-                    // Create DateTime objects
-                    $start_date = new DateTime($formatted_start);
-                    $end_date = new DateTime($formatted_end);
+                    // Add debug logging for every reservation found
+                    error_log('Processing reservation: ' . $formatted_start . ' - ' . $formatted_end . ' | Status: ' . $row->status);
+                    
+                    // Create DateTime objects - handle different date formats (DD.MM.YYYY or YYYY-MM-DD)
+                    try {
+                        // First try standard format
+                        $start_date = new DateTime($formatted_start);
+                        $end_date = new DateTime($formatted_end);  
+                    } catch (Exception $e) {
+                        // If that fails, try DD.MM.YYYY format
+                        try {
+                            $start_parts = explode('.', $formatted_start);
+                            $end_parts = explode('.', $formatted_end);
+                            if (count($start_parts) === 3 && count($end_parts) === 3) {
+                                $start_date = new DateTime($start_parts[2] . '-' . $start_parts[1] . '-' . $start_parts[0]);
+                                $end_date = new DateTime($end_parts[2] . '-' . $end_parts[1] . '-' . $end_parts[0]);
+                            } else {
+                                error_log('Invalid date format: ' . $formatted_start . ' - ' . $formatted_end);
+                                continue;
+                            }
+                        } catch (Exception $e2) {
+                            error_log('Failed to parse dates: ' . $formatted_start . ' - ' . $formatted_end . ' | Error: ' . $e2->getMessage());
+                            continue;
+                        }
+                    }
+                    
                     $today = new DateTime('now', new DateTimeZone('Asia/Jerusalem')); // Using Israel timezone
                     $today->setTime(0, 0, 0); // Reset time to start of day
                     
@@ -680,6 +704,9 @@ class Stock_Debugger {
                         error_log('Skipping past reservation: ' . $formatted_start . ' - ' . $formatted_end);
                         continue;
                     }
+                    
+                    // Log if this reservation is kept
+                    error_log('KEEPING RESERVATION: ' . $formatted_start . ' - ' . $formatted_end . ' | Status: ' . $row->status);
                     
                     // Get quantity from order
                     $quantity = isset($row->item_quantity) ? (int)$row->item_quantity : 1;
