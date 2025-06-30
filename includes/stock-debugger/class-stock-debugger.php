@@ -374,7 +374,8 @@ class Stock_Debugger {
         }
         
         $product_id = $product->get_id();
-        $reserved_dates = $this->get_reserved_dates($product_id);
+        $reserved_data = $this->get_reserved_dates($product_id);
+        $reserved_dates = isset($reserved_data['availability']) ? $reserved_data['availability'] : [];
         
         // Get initial stock from custom meta or use current stock if not set
         $initial_stock = (int) get_post_meta($product_id, '_initial_stock', true);
@@ -421,7 +422,9 @@ class Stock_Debugger {
         
         $product_id = $product->get_id();
         $stock = $product->get_stock_quantity();
-        $reserved_dates = $this->get_reserved_dates($product_id);
+        $reserved_data = $this->get_reserved_dates($product_id);
+        $reserved_availability = isset($reserved_data['availability']) ? $reserved_data['availability'] : [];
+        $reserved_dates = isset($reserved_data['reservations']) ? $reserved_data['reservations'] : [];
         $buffer_dates = $this->get_buffer_dates($product_id);
         $active_rentals = $this->get_active_rentals($product_id);
         
@@ -581,7 +584,7 @@ class Stock_Debugger {
         $sql = $wpdb->prepare(
             "SELECT 
                 oi.order_id,
-                o.status,
+                p.post_status as status,
                 oim.meta_value as rental_dates,
                 oi.order_item_name as order_item_name,
                 oim4.meta_value as item_quantity
@@ -598,13 +601,14 @@ class Stock_Debugger {
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta oim4 
                 ON oi.order_item_id = oim4.order_item_id 
                 AND oim4.meta_key = '_qty'
-            JOIN {$wpdb->prefix}wc_orders o 
-                ON oi.order_id = o.id
+            JOIN {$wpdb->prefix}posts p 
+                ON oi.order_id = p.ID
             WHERE oim.meta_key IS NOT NULL
               AND oim2.meta_key IS NOT NULL
               AND oim2.meta_value = %d
-              AND o.status IN ('wc-processing', 'wc-on-hold', 'wc-pending', 'wc-rental-confirmed')
-            ORDER BY o.id DESC, oi.order_item_id",
+              AND p.post_type = 'shop_order'
+              AND p.post_status = 'wc-processing'
+            ORDER BY p.ID DESC, oi.order_item_id",
             $product_id
         );
         
@@ -662,12 +666,23 @@ class Stock_Debugger {
                 $debug_row['formatted_end'] = $formatted_end;
                 
                 try {
+                    $formatted_start = trim($date_range[0]);
+                    $formatted_end = trim($date_range[1]);
+                    
                     // Create DateTime objects
                     $start_date = new DateTime($formatted_start);
                     $end_date = new DateTime($formatted_end);
+                    $today = new DateTime('now', new DateTimeZone('Asia/Jerusalem')); // Using Israel timezone
+                    $today->setTime(0, 0, 0); // Reset time to start of day
+                    
+                    // Skip this reservation if end date is in the past
+                    if ($end_date < $today) {
+                        error_log('Skipping past reservation: ' . $formatted_start . ' - ' . $formatted_end);
+                        continue;
+                    }
                     
                     // Get quantity from order
-                    $quantity = (int)$row->item_quantity;
+                    $quantity = isset($row->item_quantity) ? (int)$row->item_quantity : 1;
                     if ($quantity <= 0) {
                         $quantity = 1; // Default to 1 if quantity is not set
                     }
@@ -677,6 +692,8 @@ class Stock_Debugger {
                         'end' => $end,
                         'formatted_start' => $formatted_start,
                         'formatted_end' => $formatted_end,
+                        'start_date' => $formatted_start,  // Added for compatibility with render_debug_output
+                        'end_date' => $formatted_end,      // Added for compatibility with render_debug_output
                         'status' => $row->status,
                         'order_id' => $row->order_id,
                         'quantity' => (int)$row->item_quantity,
@@ -742,8 +759,8 @@ class Stock_Debugger {
             ];
         }
         
-        // Return the availability as array for template display
-        return $availability;
+        // Return both the availability for calendar and the all_reservations for debug panel
+        return ["availability" => $availability, "reservations" => $all_reservations];
     }
     
     /**
@@ -834,7 +851,9 @@ class Stock_Debugger {
         }
         
         $stock = $product->get_stock_quantity();
-        $reserved_dates = $this->get_reserved_dates($product_id);
+        $reserved_data = $this->get_reserved_dates($product_id);
+        $reserved_availability = isset($reserved_data['availability']) ? $reserved_data['availability'] : [];
+        $reserved_dates = isset($reserved_data['reservations']) ? $reserved_data['reservations'] : [];
         $buffer_dates = $this->get_buffer_dates($product_id);
         $active_rentals = $this->get_active_rentals($product_id);
         
@@ -842,7 +861,8 @@ class Stock_Debugger {
             'stock' => $stock,
             'manage_stock' => $product->get_manage_stock(),
             'stock_status' => $product->get_stock_status(),
-            'reserved_dates' => $reserved_dates,
+            'reserved_dates' => $reserved_availability,
+            'reservations' => $reserved_dates,
             'buffer_dates' => $buffer_dates,
             'active_rentals' => $active_rentals,
         ]);
