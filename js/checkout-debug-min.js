@@ -7,8 +7,8 @@ jQuery(document).ready(function($) {
         return;
     }
 
-    console.log('=== Mitnafun Order Admin: Checkout Debug ===');
-    console.log('Debug script loaded successfully');
+    // console.log('=== Mitnafun Order Admin: Checkout Debug ===');
+    // console.log('Debug script loaded successfully');
 
     // Add a visible debug message
     var debugPanel = $('<div id="mitnafun-debug-message" style="position: fixed; top: 20px; right: 20px; background: #fff; padding: 10px; border: 1px solid #ccc; z-index: 9999; max-height: 80vh; overflow-y: auto; width: 300px;">\
@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
     function getProductId(item) {
         try {
             // Debug the item structure
-            console.log('Trying to extract product ID from:', item);
+            // console.log('Trying to extract product ID from:', item);
             
             // Check for product ID in data attributes
             if ($(item).data('product-id')) {
@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
             // Check for product name containing "מגה סלייד דקלים" (product ID 4217)
             var nameElem = $(item).find('.product-name');
             if (nameElem.length && nameElem.text().indexOf('מגה סלייד דקלים') > -1) {
-                console.log('Found product by Hebrew name: מגה סלייד דקלים');
+                // console.log('Found product by Hebrew name: מגה סלייד דקלים');
                 return 4217;
             }
             
@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
             // Look for rental dates in variation description
             var variationText = $(item).find('.variation').text();
             if (variationText) {
-                console.log('Found variation text:', variationText);
+                // console.log('Found variation text:', variationText);
                 return variationText.trim();
             }
             
@@ -79,7 +79,7 @@ jQuery(document).ready(function($) {
             var allText = $(item).text();
             var match = allText.match(datePattern);
             if (match) {
-                console.log('Found date pattern in text:', match[0]);
+                // console.log('Found date pattern in text:', match[0]);
                 return match[0];
             }
             
@@ -128,7 +128,7 @@ jQuery(document).ready(function($) {
                         
                         // For product ID 4217, if initial_stock is missing, set a default
                         if (isSpecialProduct && (!data.initial_stock || data.initial_stock === '' || data.initial_stock === null)) {
-                            console.log('Adding default initial stock for product 4217');
+                            // console.log('Adding default initial stock for product 4217');
                             data.initial_stock = 20;
                             data.initial_stock_debug = 'Frontend fallback';
                         }
@@ -139,7 +139,7 @@ jQuery(document).ready(function($) {
                         
                         // Special fallback for product 4217
                         if (isSpecialProduct) {
-                            console.log('AJAX failed for product 4217, using fallback data');
+                            // console.log('AJAX failed for product 4217, using fallback data');
                             resolve({
                                 id: 4217,
                                 name: 'מגה סלייד דקלים',
@@ -158,7 +158,7 @@ jQuery(document).ready(function($) {
                     
                     // Special fallback for product 4217
                     if (isSpecialProduct) {
-                        console.log('AJAX error for product 4217, using fallback data');
+                        // console.log('AJAX error for product 4217, using fallback data');
                         resolve({
                             id: 4217,
                             name: 'מגה סלייד דקלים',
@@ -177,7 +177,7 @@ jQuery(document).ready(function($) {
     
     // Function to process cart items and display debug info
     function processCartItems() {
-        console.log('Processing cart items...');
+        // console.log('Processing cart items...');
         
         // Find cart items
         var cartItems = $('.cart_item, .checkout-review-order-table .cart_item');
@@ -187,7 +187,7 @@ jQuery(document).ready(function($) {
             return;
         }
         
-        console.log('Found ' + cartItems.length + ' cart items');
+        // console.log('Found ' + cartItems.length + ' cart items');
         
         // Clear previous content
         $('#cart-items').empty();
@@ -199,7 +199,7 @@ jQuery(document).ready(function($) {
             var rentalDates = getRentalDates($item);
             var quantity = getQuantity($item);
             
-            console.log('Cart item ' + (index + 1) + ':', {
+            // console.log('Cart item ' + (index + 1) + ':', {
                 productId: productId,
                 rentalDates: rentalDates,
                 quantity: quantity
@@ -252,7 +252,7 @@ jQuery(document).ready(function($) {
             if ($('.woocommerce-checkout-review-order-table').length) {
                 processCartItems();
             } else {
-                console.log('Waiting for checkout to load...');
+                // console.log('Waiting for checkout to load...');
                 setTimeout(waitForCheckout, 500);
             }
         }
@@ -264,7 +264,7 @@ jQuery(document).ready(function($) {
     function getProductId(item) {
         try {
             // Debug the item structure
-            console.log('Trying to extract product ID from:', item);
+            // console.log('Trying to extract product ID from:', item);
             
             // Check for product ID in data attributes
             if ($(item).data('product-id')) {
@@ -280,7 +280,7 @@ jQuery(document).ready(function($) {
             // Check for product name containing "מגה סלייד דקלים" (product ID 4217)
             var nameElem = $(item).find('.product-name');
             if (nameElem.length && nameElem.text().indexOf('מגה סלייד דקלים') > -1) {
-                console.log('Found product by Hebrew name: מגה סלייד דקלים');
+                // console.log('Found product by Hebrew name: מגה סלייד דקלים');
                 return 4217;
             }
             
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
             // Look for rental dates in variation description
             var variationText = $(item).find('.variation').text();
             if (variationText) {
-                console.log('Found variation text:', variationText);
+                // console.log('Found variation text:', variationText);
                 return variationText.trim();
             }
             
@@ -308,7 +308,7 @@ jQuery(document).ready(function($) {
             var allText = $(item).text();
             var match = allText.match(datePattern);
             if (match) {
-                console.log('Found date pattern in text:', match[0]);
+                // console.log('Found date pattern in text:', match[0]);
                 return match[0];
             }
             
@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
                         
                         // For product ID 4217, if initial_stock is missing, set a default
                         if (isSpecialProduct && (!data.initial_stock || data.initial_stock === '' || data.initial_stock === null)) {
-                            console.log('Adding default initial stock for product 4217');
+                            // console.log('Adding default initial stock for product 4217');
                             data.initial_stock = 20;
                             data.initial_stock_debug = 'Frontend fallback';
                         }
@@ -368,7 +368,7 @@ jQuery(document).ready(function($) {
                         
                         // Special fallback for product 4217
                         if (isSpecialProduct) {
-                            console.log('AJAX failed for product 4217, using fallback data');
+                            // console.log('AJAX failed for product 4217, using fallback data');
                             resolve({
                                 id: 4217,
                                 name: 'מגה סלייד דקלים',
@@ -387,7 +387,7 @@ jQuery(document).ready(function($) {
                     
                     // Special fallback for product 4217
                     if (isSpecialProduct) {
-                        console.log('AJAX error for product 4217, using fallback data');
+                        // console.log('AJAX error for product 4217, using fallback data');
                         resolve({
                             id: 4217,
                             name: 'מגה סלייד דקלים',
@@ -398,51 +398,51 @@ jQuery(document).ready(function($) {
                         });
                     } else {
                         resolve(null);
-            console.log('Item HTML:', item.outerHTML);
+            // console.log('Item HTML:', item.outerHTML);
             
             // Try data-product-id attribute on the item itself
             if (item.dataset && item.dataset.productId) {
-                console.log('Found product ID in dataset:', item.dataset.productId);
+                // console.log('Found product ID in dataset:', item.dataset.productId);
                 return parseInt(item.dataset.productId);
             }
             
             // Try closest parent with data-product-id
             var closestWithData = item.closest('[data-product-id]');
             if (closestWithData && closestWithData.dataset.productId) {
-                console.log('Found product ID in parent dataset:', closestWithData.dataset.productId);
+                // console.log('Found product ID in parent dataset:', closestWithData.dataset.productId);
                 return parseInt(closestWithData.dataset.productId);
             }
             
             // Try WooCommerce hidden input (cart item key)
             var input = item.querySelector('input[name^="cart"][name$="[product_id]"]');
             if (input && input.value) {
-                console.log('Found product ID in hidden input:', input.value);
+                // console.log('Found product ID in hidden input:', input.value);
                 return parseInt(input.value);
             }
             
             // Try to find any input with product_id in the name
             var allInputs = item.querySelectorAll('input');
-            console.log('All inputs in item:', allInputs);
+            // console.log('All inputs in item:', allInputs);
             for (var i = 0; i < allInputs.length; i++) {
                 var inputName = allInputs[i].name;
                 var inputValue = allInputs[i].value;
-                console.log(`Input ${i}: name=${inputName}, value=${inputValue}`);
+                // console.log(`Input ${i}: name=${inputName}, value=${inputValue}`);
                 if (inputName && (inputName.includes('product_id') || inputName.includes('product-id'))) {
-                    console.log('Found product ID in input name:', inputValue);
+                    // console.log('Found product ID in input name:', inputValue);
                     return parseInt(inputValue);
                 }
             }
             
             // Try product link href (common in Woo templates)
             var prodLinks = item.querySelectorAll('a');
-            console.log('All links in item:', prodLinks);
+            // console.log('All links in item:', prodLinks);
             for (var j = 0; j < prodLinks.length; j++) {
                 var href = prodLinks[j].href;
-                console.log(`Link ${j} href:`, href);
+                // console.log(`Link ${j} href:`, href);
                 if (href && href.includes('product')) {
                     var prodMatch = href.match(/product\/(\d+)/);
                     if (prodMatch) {
-                        console.log('Found product ID in link href:', prodMatch[1]);
+                        // console.log('Found product ID in link href:', prodMatch[1]);
                         return parseInt(prodMatch[1]);
                     }
                 }
@@ -452,11 +452,11 @@ jQuery(document).ready(function($) {
             var productNameEl = item.querySelector('.product-name');
             if (productNameEl) {
                 var nameText = productNameEl.textContent;
-                console.log('Product name text:', nameText);
+                // console.log('Product name text:', nameText);
                 // Look for ID pattern in name (e.g., "Product Name #123")
                 var idInNameMatch = nameText.match(/#(\d+)/);
                 if (idInNameMatch) {
-                    console.log('Found product ID in name text:', idInNameMatch[1]);
+                    // console.log('Found product ID in name text:', idInNameMatch[1]);
                     return parseInt(idInNameMatch[1]);
                 }
             }
@@ -467,7 +467,7 @@ jQuery(document).ready(function($) {
                 var attr = dataAttrs[k];
                 if (item.hasAttribute(attr)) {
                     var attrValue = item.getAttribute(attr);
-                    console.log(`Found attribute ${attr}:`, attrValue);
+                    // console.log(`Found attribute ${attr}:`, attrValue);
                     if (attrValue && !isNaN(parseInt(attrValue))) {
                         return parseInt(attrValue);
                     }
@@ -476,13 +476,13 @@ jQuery(document).ready(function($) {
             
             // Try class name (e.g., product-1234)
             var classes = item.className.split(' ');
-            console.log('Item classes:', classes);
+            // console.log('Item classes:', classes);
             for (var l = 0; l < classes.length; l++) {
                 var cls = classes[l];
                 if (cls.match(/product-\d+/)) {
                     var idMatch = cls.match(/product-(\d+)/);
                     if (idMatch) {
-                        console.log('Found product ID in class name:', idMatch[1]);
+                        // console.log('Found product ID in class name:', idMatch[1]);
                         return parseInt(idMatch[1]);
                     }
                 }
@@ -497,7 +497,7 @@ jQuery(document).ready(function($) {
                     var attrName = attrs[n].name;
                     var attrValue = attrs[n].value;
                     if (attrName.startsWith('data-') && !isNaN(parseInt(attrValue))) {
-                        console.log(`Found potential product ID in ${attrName}:`, attrValue);
+                        // console.log(`Found potential product ID in ${attrName}:`, attrValue);
                         return parseInt(attrValue);
                     }
                 }
@@ -557,7 +557,7 @@ jQuery(document).ready(function($) {
             
             // Special handling for product ID 4217 (מגה סלייד דקלים)
             if (productId === '4217' || productId === 4217) {
-                console.log('Special handling for product ID 4217 (מגה סלייד דקלים)');
+                // console.log('Special handling for product ID 4217 (מגה סלייד דקלים)');
                 
                 // Try to find initial stock from the page if possible
                 try {
@@ -565,11 +565,11 @@ jQuery(document).ready(function($) {
                     const productElements = document.querySelectorAll('.product-name');
                     for (const elem of productElements) {
                         if (elem.textContent.includes('מגה סלייד דקלים')) {
-                            console.log('Found מגה סלייד דקלים in page');
+                            // console.log('Found מגה סלייד דקלים in page');
                             // Try to find stock info in nearby elements
                             const stockElem = elem.closest('tr')?.querySelector('.product-quantity');
                             if (stockElem) {
-                                console.log('Found stock element for product 4217:', stockElem.textContent);
+                                // console.log('Found stock element for product 4217:', stockElem.textContent);
                             }
                         }
                     }
@@ -583,7 +583,7 @@ jQuery(document).ready(function($) {
             var attr = dataAttrs[k];
             if (item.hasAttribute(attr)) {
                 var attrValue = item.getAttribute(attr);
-                console.log(`Found attribute ${attr}:`, attrValue);
+                // console.log(`Found attribute ${attr}:`, attrValue);
                 if (attrValue && !isNaN(parseInt(attrValue))) {
                     return parseInt(attrValue);
                 }
@@ -592,13 +592,13 @@ jQuery(document).ready(function($) {
 
         // Try class name (e.g., product-1234)
         var classes = item.className.split(' ');
-        console.log('Item classes:', classes);
+        // console.log('Item classes:', classes);
         for (var l = 0; l < classes.length; l++) {
             var cls = classes[l];
             if (cls.match(/product-\d+/)) {
                 var idMatch = cls.match(/product-(\d+)/);
                 if (idMatch) {
-                    console.log('Found product ID in class name:', idMatch[1]);
+                    // console.log('Found product ID in class name:', idMatch[1]);
                     return parseInt(idMatch[1]);
                 }
             }
@@ -613,7 +613,7 @@ jQuery(document).ready(function($) {
                 var attrName = attrs[n].name;
                 var attrValue = attrs[n].value;
                 if (attrName.startsWith('data-') && !isNaN(parseInt(attrValue))) {
-                    console.log(`Found potential product ID in ${attrName}:`, attrValue);
+                    // console.log(`Found potential product ID in ${attrName}:`, attrValue);
                     return parseInt(attrValue);
                 }
             }
@@ -665,11 +665,11 @@ function getQuantity(item) {
 
 // Function to fetch product details via AJAX
 async function fetchProductDetails(productId) {
-    console.log(`Fetching details for product ID: ${productId}`);
+    // console.log(`Fetching details for product ID: ${productId}`);
 
     // Special handling for product ID 4217 (מגה סלייד דקלים)
     if (productId === '4217' || productId === 4217) {
-        console.log('Special handling for product ID 4217 (מגה סלייד דקלים)');
+        // console.log('Special handling for product ID 4217 (מגה סלייד דקלים)');
 
         // Try to find initial stock from the page if possible
         let initialStock = null;
@@ -681,12 +681,12 @@ async function fetchProductDetails(productId) {
                     // Try to find stock info in nearby elements
                     const stockElem = elem.closest('tr')?.querySelector('.product-quantity');
                     if (stockElem) {
-                        console.log('Found stock element for product 4217:', stockElem);
+                        // console.log('Found stock element for product 4217:', stockElem);
                     }
                 }
             }
         } catch (e) {
-            console.log('Error finding stock info in page:', e);
+            // console.log('Error finding stock info in page:', e);
         }
     }
 
@@ -705,7 +705,7 @@ async function fetchProductDetails(productId) {
     // Function to extract product ID from Hebrew checkout text
     function extractProductIdFromHebrewText(text) {
         if (!text) return null;
-        console.log('Trying to extract product ID from Hebrew text:', text);
+        // console.log('Trying to extract product ID from Hebrew text:', text);
         
         // Look for product ID patterns in Hebrew text
         // Common pattern: product name followed by product ID in parentheses
@@ -721,7 +721,7 @@ async function fetchProductDetails(productId) {
         
         // Special case for מגה סלייד דקלים (Mega Slide Dekalim) - hardcoded mapping
         if (text.includes('מגה סלייד דקלים')) {
-            console.log('Found "מגה סלייד דקלים" product - using hardcoded ID: 4217');
+            // console.log('Found "מגה סלייד דקלים" product - using hardcoded ID: 4217');
             return 4217; // Replace with the actual product ID
         }
         
@@ -729,7 +729,7 @@ async function fetchProductDetails(productId) {
         for (const pattern of idPatterns) {
             const match = text.match(pattern);
             if (match && match[1]) {
-                console.log('Found product ID in Hebrew text:', match[1], 'using pattern:', pattern);
+                // console.log('Found product ID in Hebrew text:', match[1], 'using pattern:', pattern);
                 return parseInt(match[1]);
             }
         }
@@ -737,7 +737,7 @@ async function fetchProductDetails(productId) {
         // Try to extract from any number in the text as last resort
         const anyNumberMatch = text.match(/(\d+)/);
         if (anyNumberMatch && anyNumberMatch[1]) {
-            console.log('Found potential product ID as any number in text:', anyNumberMatch[1]);
+            // console.log('Found potential product ID as any number in text:', anyNumberMatch[1]);
             return parseInt(anyNumberMatch[1]);
         }
         
@@ -753,7 +753,7 @@ async function fetchProductDetails(productId) {
             
             if (cartItems.length === 0) {
                 itemsContainer.innerHTML = '<div style="color: #666; padding: 10px 0;">No items in cart</div>';
-                console.log('No cart items found');
+                // console.log('No cart items found');
                 return;
             }
             
@@ -768,7 +768,7 @@ async function fetchProductDetails(productId) {
                 try {
                     // Get product name first for Hebrew text extraction
                     const productName = item.querySelector('.product-name')?.textContent.trim() || 'Unknown Product';
-                    console.log('Product name found:', productName);
+                    // console.log('Product name found:', productName);
                     
                     // Try to get product ID using multiple methods
                     let productId = getProductId(item);
@@ -785,7 +785,7 @@ async function fetchProductDetails(productId) {
                             const matches = itemHtml.match(/product[_\-]id["']?\s*[:=]\s*["']?(\d+)/i);
                             if (matches && matches[1]) {
                                 productId = parseInt(matches[1]);
-                                console.log('Found product ID in HTML:', productId);
+                                // console.log('Found product ID in HTML:', productId);
                             }
                         }
                     }
@@ -794,7 +794,7 @@ async function fetchProductDetails(productId) {
                     const rentalDates = getRentalDates(item);
                     const quantity = getQuantity(item);
                     
-                    console.log(`Processing item: ${productName}, ID: ${productId}, Dates: ${rentalDates}, Qty: ${quantity}`);
+                    // console.log(`Processing item: ${productName}, ID: ${productId}, Dates: ${rentalDates}, Qty: ${quantity}`);
                     
                     // Fetch additional product details
                     const productDetails = await fetchProductDetails(productId);
@@ -893,7 +893,7 @@ async function fetchProductDetails(productId) {
             
             // Update the container with all items
             itemsContainer.innerHTML = itemsHtml;
-            console.log('Cart items displayed successfully');
+            // console.log('Cart items displayed successfully');
         } catch (error) {
             console.error('Error showing cart items:', error);
             itemsContainer.innerHTML = `
@@ -908,5 +908,5 @@ async function fetchProductDetails(productId) {
     waitForCheckout();
     
     // Add console log
-    console.log('Checkout debug script initialized');
+    // console.log('Checkout debug script initialized');
 });

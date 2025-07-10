@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
                 data: data || null
             };
             this.logs.push(logEntry);
-            console.log('[' + timestamp + '] ' + message, data || '');
+            // console.log('[' + timestamp + '] ' + message, data || '');
         },
         getLogs: function() {
             return this.logs;

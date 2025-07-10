@@ -74,7 +74,7 @@ class Cart_Debugger {
         jQuery(document).ready(function($) {
             // Log form submissions
             $('form.cart').on('submit', function(e) {
-                console.log('Form submitted', {
+                // console.log('Form submitted', {
                     formData: $(this).serialize(),
                     startDate: $('#rental_start_date').val(),
                     endDate: $('#rental_end_date').val(),
@@ -85,7 +85,7 @@ class Cart_Debugger {
             // Log AJAX responses
             $(document).ajaxComplete(function(event, xhr, settings) {
                 if (settings.url.includes('wc-ajax=add_to_cart')) {
-                    console.log('Add to cart response:', {
+                    // console.log('Add to cart response:', {
                         status: xhr.status,
                         response: xhr.responseJSON,
                         settings: settings

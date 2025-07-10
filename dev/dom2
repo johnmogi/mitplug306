@@ -47,7 +47,7 @@ selection of the 27 day began
                         // Make discount values available globally
                         window.discountType = 'percentage';
                         window.discountValue = 50;
-                        console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
+                        // console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
                     </script>
                     
                     <h3>תאריכי השכרה</h3>

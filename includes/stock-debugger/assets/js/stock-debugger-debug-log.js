@@ -16,7 +16,7 @@
     
     // Listen for the custom event from rental datepicker
     $(document).on('rentalDatesLoaded', function(event, data) {
-        console.log('🔄 Rental dates loaded event received:', data);
+        // console.log('🔄 Rental dates loaded event received:', data);
         
         // Store the data globally
         if (data && data.bookedDates) {
@@ -29,26 +29,26 @@
             const formattedDates = formatDatesForStockDebugger(data.bookedDates);
             
             // Debug the DOM structure of the stock debugger panel
-            console.log('🔍 Stock Debugger DOM Structure:');
-            console.log('Stock debugger panel:', $('#stock-debugger-panel').length ? 'Found' : 'Not found');
+            // console.log('🔍 Stock Debugger DOM Structure:');
+            // console.log('Stock debugger panel:', $('#stock-debugger-panel').length ? 'Found' : 'Not found');
             
             // Look for tables in the stock debugger panel
             const tables = $('#stock-debugger-panel table');
-            console.log('Tables in stock debugger panel:', tables.length);
+            // console.log('Tables in stock debugger panel:', tables.length);
             tables.each(function(index) {
-                console.log(`Table ${index}:`, {
-                    id: this.id || 'No ID',
-                    className: this.className || 'No class',
-                    caption: $(this).find('caption').text() || 'No caption',
-                    theadText: $(this).find('thead').text().trim().substring(0, 50) || 'No thead',
-                    rows: $(this).find('tbody tr').length
-                });
+                // console.log(`Table ${index}:`, {
+                //     id: this.id || 'No ID',
+                //     className: this.className || 'No class',
+                //     caption: $(this).find('caption').text() || 'No caption',
+                //     theadText: $(this).find('thead').text().trim().substring(0, 50) || 'No thead',
+                //     rows: $(this).find('tbody tr').length
+                // });
             });
             
             // Update the stock debugger table if it exists
             updateStockDebuggerTable(formattedDates);
             
-            console.log('📊 Stock debugger data updated:', formattedDates);
+            // console.log('📊 Stock debugger data updated:', formattedDates);
         }
     });
     
@@ -59,7 +59,7 @@
      */
     function formatDatesForStockDebugger(bookedDates) {
         if (!Array.isArray(bookedDates) || bookedDates.length === 0) {
-            console.log('No booked dates to format');
+            // console.log('No booked dates to format');
             return [];
         }
         
@@ -233,12 +233,12 @@
         }
         
         if (!tableBody.length) {
-            console.log('Reserved dates table not found - creating it');
+            // console.log('Reserved dates table not found - creating it');
             
             // Find the stock debugger panel
             const panel = $('#stock-debugger-panel');
             if (!panel.length) {
-                console.log('Stock debugger panel not found');
+                // console.log('Stock debugger panel not found');
                 console.table(reservedDates); // Log data as table for debugging
                 return;
             }
@@ -268,7 +268,7 @@
             // Get the table body reference
             tableBody = $('#reserved-dates-table tbody');
             
-            console.log('Created reserved dates table');
+            // console.log('Created reserved dates table');
         }
         
         let html = '';
@@ -294,16 +294,16 @@
         }
         
         tableBody.html(html);
-        console.log('Stock debugger table updated with', reservedDates.length, 'entries');
+        // console.log('Stock debugger table updated with', reservedDates.length, 'entries');
     }
     
     // Expose debug API for manual use
     window.stockDebuggerAPI = {
         updateTable: updateStockDebuggerTable,
         formatDates: formatDatesForStockDebugger,
-        debugData: () => console.log('Current debug data:', window.rentalDebugData)
+        // debugData: () => console.log('Current debug data:', window.rentalDebugData)
     };
     
-    console.log('📋 Stock Debugger Debug Log initialized');
+    // console.log('📋 Stock Debugger Debug Log initialized');
     
 })(jQuery);

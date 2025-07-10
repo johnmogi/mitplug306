@@ -8,7 +8,7 @@
     
     // Debug helper function
     const debug = (message) => {
-        console.log('🛠️ Stock Debugger: ' + message);
+        // console.log('🛠️ Stock Debugger: ' + message);
     };
     
     debug('Script Loaded');

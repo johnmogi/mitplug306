@@ -8,7 +8,7 @@
     
     // Debug helper function
     const debug = (message) => {
-        console.log('🛠️ Stock Debugger: ' + message);
+        // console.log('🛠️ Stock Debugger: ' + message);
     };
     
     debug('Script Loaded');
@@ -203,7 +203,7 @@
                 data: {
                     action: 'get_booked_dates',  // Using the working endpoint
                     product_id: this.productId,
-                    nonce: wc_add_to_cart_params.ajax_nonce || ''  // Just use WooCommerce nonce if available
+                    nonce: wc_add_to_cart_params.nonce || rentalDatepickerVars.nonce || ''  // Try all available nonces
                 },
                 success: (response) => {
                     if (response.success) {

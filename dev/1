@@ -126,7 +126,7 @@
               var attempts = 0;
               var maxAttempts = 5;
               var checkInterval = setInterval(function() {
-                  console.log('Checking for AirDatepicker, attempt ' + (attempts + 1));
+                  // console.log('Checking for AirDatepicker, attempt ' + (attempts + 1));
                   if (checkAndInitDatepicker() || ++attempts >= maxAttempts) {
                       clearInterval(checkInterval);
                       if (attempts >= maxAttempts && typeof AirDatepicker === 'undefined') {
@@ -319,7 +319,7 @@
                   $('.single_add_to_cart_button').prop('disabled', true);
                   
                   function updatePriceBreakdown(basePrice, totalDays, discountType, discountValue) {
-                      console.log('%c PRICE DEBUG', 'background: #f0f; color: white; padding: 2px 5px; border-radius: 3px;', {
+                      // console.log('%c PRICE DEBUG', 'background: #f0f; color: white; padding: 2px 5px; border-radius: 3px;', {
                           basePrice, 
                           totalDays, 
                           discountType, 
@@ -333,7 +333,7 @@
                           try {
                               const priceTxt = $('.woocommerce-Price-amount').first().text().trim();
                               basePrice = parseFloat(priceTxt.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                              console.log(' Retrieved basePrice from DOM:', basePrice);
+                              // console.log(' Retrieved basePrice from DOM:', basePrice);
                           } catch (e) {
                               console.error('Failed to get basePrice from DOM:', e);
                               return;
@@ -351,18 +351,18 @@
                       let savings = 0;
                       let totalPrice = basePrice; // First day is always full price
                       
-                      console.log(' Initial totalPrice', totalPrice);
+                      // console.log(' Initial totalPrice', totalPrice);
                       
                       // If more than one day, calculate additional days with discount
                       if (totalDays > 1) {
                           const additionalDays = totalDays - 1;
-                          console.log(' additionalDays', additionalDays);
+                          // console.log(' additionalDays', additionalDays);
                           
                           // Calculate based on discount type
                           if (discountType === 'percentage') {
                               // Calculate discounted price for additional days
                               const discountedDailyRate = basePrice * (1 - (discountValue / 100));
-                              console.log(' discountedDailyRate (percentage)', discountedDailyRate);
+                              // console.log(' discountedDailyRate (percentage)', discountedDailyRate);
                               additionalDaysPrice = discountedDailyRate * additionalDays;
                               
                               // Calculate savings (what full price would have been minus actual price)
@@ -370,7 +370,7 @@
                           } else {
                               // Fixed discount
                               const discountedDailyRate = Math.max(0, basePrice - discountValue);
-                              console.log(' discountedDailyRate (fixed)', discountedDailyRate);
+                              // console.log(' discountedDailyRate (fixed)', discountedDailyRate);
                               additionalDaysPrice = discountedDailyRate * additionalDays;
                               
                               // Calculate savings (what full price would have been minus actual price)
@@ -379,7 +379,7 @@
                           
                           // Add to total price
                           totalPrice += additionalDaysPrice;
-                          console.log(' Final totalPrice', totalPrice, 'additionalDaysPrice', additionalDaysPrice, 'savings', savings);
+                          // console.log(' Final totalPrice', totalPrice, 'additionalDaysPrice', additionalDaysPrice, 'savings', savings);
                       }
                       
                       // Format the discount label
@@ -387,7 +387,7 @@
                           ? discountValue + '% הנחה' 
                           : discountValue + ' ₪ הנחה';
                       
-                      console.log(' Building price breakdown HTML with label:', discountLabel);
+                      // console.log(' Building price breakdown HTML with label:', discountLabel);
                       
                       // Format price with Hebrew currency formatter
                       function formatCurrency(amount) {
@@ -411,14 +411,14 @@
                       </div>
                       `;
                       
-                      console.log('HTML Generated:', directHtml);
+                      // console.log('HTML Generated:', directHtml);
                       
                       // Remove any existing direct breakdowns first
                       $('.mitnafun-breakdown, .mitnafun-direct-breakdown').remove();
                       
                       // First, check for our container
                       if ($('#price-breakdown-container').length) {
-                          console.log(' Using price-breakdown-container');
+                          // console.log(' Using price-breakdown-container');
                           // Also update our container elements
                           $priceBreakdownList.append(`
                               <li>יום ראשון: ${formatCurrency(basePrice)} (מחיר מלא)</li>
@@ -440,28 +440,28 @@
                       // Now insert our direct HTML as well, as a fallback
                       // After price amount
                       if ($('.woocommerce-Price-amount').length) {
-                          console.log(' Inserting after .woocommerce-Price-amount');
+                          // console.log(' Inserting after .woocommerce-Price-amount');
                           $('.woocommerce-Price-amount').first().closest('.price').after(directHtml);
                       }
                       // After form-start
                       else if ($('.rental-form-start').length) {
-                          console.log(' Inserting after .rental-form-start');
+                          // console.log(' Inserting after .rental-form-start');
                           $('.rental-form-start').after(directHtml);
                       }
                       // After validation message
                       else if ($('#date-validation-message').length) {
-                          console.log(' Inserting after #date-validation-message');
+                          // console.log(' Inserting after #date-validation-message');
                           $('#date-validation-message').after(directHtml);
                       }
                       // Last resort - after add to cart
                       else if ($('.single_add_to_cart_button').length) {
-                          console.log(' Inserting after .single_add_to_cart_button');
+                          // console.log(' Inserting after .single_add_to_cart_button');
                           $('.single_add_to_cart_button').after(directHtml);
                       } else {
                           console.error(' Could not find insertion point for price breakdown');
                       }
                       
-                      console.log(' Price breakdown update complete');
+                      // console.log(' Price breakdown update complete');
                       
                       // Store calculated values in a data attribute for debugging
                       $('body').attr('data-price-calc', JSON.stringify({
@@ -504,10 +504,10 @@
   <script>
       // Make sure basePrice is always available globally
       window.basePrice = 500;
-      console.log('🌍 Global basePrice set to:', window.basePrice);
+      // console.log('🌍 Global basePrice set to:', window.basePrice);
       
       // Log other global variables for debugging
-      console.log('🌍 Global variables:', {
+      // console.log('🌍 Global variables:', {
           discountType: window.discountType,
           discountValue: window.discountValue,
           maxRentalDays: window.maxRentalDays
@@ -515,7 +515,7 @@
       
       // Delay and try to fetch values again for debugging
       setTimeout(function() {
-          console.log('⏱️ After timeout, global variables:', {
+          // console.log('⏱️ After timeout, global variables:', {
               basePrice: window.basePrice,
               discountType: window.discountType,
               discountValue: window.discountValue
@@ -523,7 +523,7 @@
           
           // Try forcing the price breakdown display directly
           if (typeof updatePriceBreakdown === 'function' && window.basePrice) {
-              console.log('🔄 Attempting direct price breakdown update from timer');
+              // console.log('🔄 Attempting direct price breakdown update from timer');
               // Use default values if needed
               const baseP = window.basePrice || 500;
               const days = 2; // Example: 2 days
@@ -699,7 +699,7 @@
                           // Make discount values available globally
                           window.discountType = 'percentage';
                           window.discountValue = 50;
-                          console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
+                          // console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
                       </script>
                       
                       <h3>תאריכי השכרה</h3>
@@ -954,7 +954,7 @@
       </div>
   </div>
   
-  <script>//<![CDATA[\nwindow.rentalReservedData = {"product_id":465,"product_name":"\u05de\u05dc\u05da \u05d4\u05d0\u05e8\u05d9\u05d5\u05ea","initial_stock":-5,"current_date":"2025-06-09 00:00:00","reservations":[{"start":"17.06.2025","end":"24.06.2025","formatted_start":"2025-06-17","formatted_end":"2025-06-24","status":"wc-on-hold","order_id":"883","item_id":"350","quantity":2,"raw_dates":"17.06.2025 - 24.06.2025"},{"start":"17.06.2025","end":"24.06.2025","formatted_start":"2025-06-17","formatted_end":"2025-06-24","status":"wc-on-hold","order_id":"883","item_id":"350","quantity":2,"raw_dates":"17.06.2025 - 24.06.2025"},{"start":"26.06.2025","end":"29.06.2025","formatted_start":"2025-06-26","formatted_end":"2025-06-29","status":"wc-on-hold","order_id":"883","item_id":"351","quantity":1,"raw_dates":"26.06.2025 - 29.06.2025"},{"start":"26.06.2025","end":"29.06.2025","formatted_start":"2025-06-26","formatted_end":"2025-06-29","status":"wc-on-hold","order_id":"883","item_id":"351","quantity":1,"raw_dates":"26.06.2025 - 29.06.2025"},{"start":"16.03.2025","end":"17.03.2025","formatted_start":"2025-03-16","formatted_end":"2025-03-17","status":"wc-processing","order_id":"829","item_id":"303","quantity":1,"raw_dates":"16.03.2025 - 17.03.2025"},{"start":"13.03.2025","end":"14.03.2025","formatted_start":"2025-03-13","formatted_end":"2025-03-14","status":"wc-processing","order_id":"827","item_id":"297","quantity":1,"raw_dates":"13.03.2025 - 14.03.2025"},{"start":"13.12.2024","end":"14.12.2024","formatted_start":"2024-12-13","formatted_end":"2024-12-14","status":"wc-processing","order_id":"746","item_id":"235","quantity":1,"raw_dates":"13.12.2024 - 14.12.2024"},{"start":"15.11.2024","end":"16.11.2024","formatted_start":"2024-11-15","formatted_end":"2024-11-16","status":"wc-processing","order_id":"741","item_id":"225","quantity":1,"raw_dates":"15.11.2024 - 16.11.2024"},{"start":"02.08.2024","end":"03.08.2024","formatted_start":"2024-08-02","formatted_end":"2024-08-03","status":"wc-processing","order_id":"615","item_id":"72","quantity":1,"raw_dates":"02.08.2024 - 03.08.2024"}],"date_availability":{"2025-06-17":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-18":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-19":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-20":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-21":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-22":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-23":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-24":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-26":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-27":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-28":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-29":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true}},"summary":{"total_reserved_dates":9,"fully_booked_dates":12,"available_dates":0}};\nconsole.groupCollapsed("Stock Debugger: Reservation Data");\nconsole.log({
+  <script>//<![CDATA[\nwindow.rentalReservedData = {"product_id":465,"product_name":"\u05de\u05dc\u05da \u05d4\u05d0\u05e8\u05d9\u05d5\u05ea","initial_stock":-5,"current_date":"2025-06-09 00:00:00","reservations":[{"start":"17.06.2025","end":"24.06.2025","formatted_start":"2025-06-17","formatted_end":"2025-06-24","status":"wc-on-hold","order_id":"883","item_id":"350","quantity":2,"raw_dates":"17.06.2025 - 24.06.2025"},{"start":"17.06.2025","end":"24.06.2025","formatted_start":"2025-06-17","formatted_end":"2025-06-24","status":"wc-on-hold","order_id":"883","item_id":"350","quantity":2,"raw_dates":"17.06.2025 - 24.06.2025"},{"start":"26.06.2025","end":"29.06.2025","formatted_start":"2025-06-26","formatted_end":"2025-06-29","status":"wc-on-hold","order_id":"883","item_id":"351","quantity":1,"raw_dates":"26.06.2025 - 29.06.2025"},{"start":"26.06.2025","end":"29.06.2025","formatted_start":"2025-06-26","formatted_end":"2025-06-29","status":"wc-on-hold","order_id":"883","item_id":"351","quantity":1,"raw_dates":"26.06.2025 - 29.06.2025"},{"start":"16.03.2025","end":"17.03.2025","formatted_start":"2025-03-16","formatted_end":"2025-03-17","status":"wc-processing","order_id":"829","item_id":"303","quantity":1,"raw_dates":"16.03.2025 - 17.03.2025"},{"start":"13.03.2025","end":"14.03.2025","formatted_start":"2025-03-13","formatted_end":"2025-03-14","status":"wc-processing","order_id":"827","item_id":"297","quantity":1,"raw_dates":"13.03.2025 - 14.03.2025"},{"start":"13.12.2024","end":"14.12.2024","formatted_start":"2024-12-13","formatted_end":"2024-12-14","status":"wc-processing","order_id":"746","item_id":"235","quantity":1,"raw_dates":"13.12.2024 - 14.12.2024"},{"start":"15.11.2024","end":"16.11.2024","formatted_start":"2024-11-15","formatted_end":"2024-11-16","status":"wc-processing","order_id":"741","item_id":"225","quantity":1,"raw_dates":"15.11.2024 - 16.11.2024"},{"start":"02.08.2024","end":"03.08.2024","formatted_start":"2024-08-02","formatted_end":"2024-08-03","status":"wc-processing","order_id":"615","item_id":"72","quantity":1,"raw_dates":"02.08.2024 - 03.08.2024"}],"date_availability":{"2025-06-17":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-18":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-19":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-20":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-21":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-22":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-23":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-24":{"reserved":2,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-26":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-27":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-28":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true},"2025-06-29":{"reserved":1,"available":0,"is_available":false,"is_fully_booked":true}},"summary":{"total_reserved_dates":9,"fully_booked_dates":12,"available_dates":0}};\nconsole.groupCollapsed("Stock Debugger: Reservation Data");\n// console.log({
       "product_id": 465,
       "product_name": "\u05de\u05dc\u05da \u05d4\u05d0\u05e8\u05d9\u05d5\u05ea",
       "initial_stock": -5,
@@ -1141,7 +1141,7 @@
       }
   });\nconsole.groupEnd();\n//]]></script><div id="stock-debugger" class="stock-debugger-panel"><div class="debug-header"><h3>🛠 Stock Debugger</h3><button class="debug-close">×</button></div><div class="debug-content"><div class="debug-section"><h4>Basic Information</h4><div class="debug-grid"><div class="debug-item"><span class="label">Product ID:</span> <span class="value">465</span></div><div class="debug-item"><span class="label">Stock:</span> <span class="value">-5</span></div><div class="debug-item"><span class="label">Manage Stock:</span> <span class="value">Yes</span></div><div class="debug-item"><span class="label">Stock Status:</span> <span class="value">onbackorder</span></div></div><div class="debug-section"><h4>Reserved Dates <span class="debug-count">(2)</span></h4><div class="debug-scrollable"><table class="debug-table"><thead><tr><th>Order ID</th><th>Status</th><th>Start Date</th><th>End Date</th><th>Quantity</th></tr></thead><tbody><tr><td><a href="https://mitnafun.local/wp-admin/post.php?post=883&amp;action=edit" target="_blank">#883</a></td><td><span class="status-badge status-on-hold">On-hold</span></td><td>17.06.2025</td><td>24.06.2025</td><td>2</td></tr><tr><td><a href="https://mitnafun.local/wp-admin/post.php?post=883&amp;action=edit" target="_blank">#883</a></td><td><span class="status-badge status-on-hold">On-hold</span></td><td>26.06.2025</td><td>29.06.2025</td><td>1</td></tr></tbody></table></div></div><div class="debug-section"><h4>Buffer Dates <span class="debug-count">(0)</span></h4><p class="no-data">Buffer dates are not currently in use.</p></div><div class="debug-section"><h4>Active Rentals <span class="debug-count">(0)</span></h4><p class="no-data">No active rentals found for this product.</p></div><div class="debug-section"><h4>Debug Controls</h4><div class="debug-controls"><button id="toggle-debug-mode" class="debug-button"><span class="dashicons dashicons-admin-generic"></span> Toggle Debug Mode</button><button id="refresh-debug-data" class="debug-button primary"><span class="dashicons dashicons-update"></span> Refresh Data</button></div></div><div class="debug-section"><h4>Legend</h4><div class="debug-legend"><div><span class="legend-box fully-booked"></span> Fully Booked</div><div><span class="legend-box partially-booked"></span> יש הזמנה קודמת</div></div></div></div></div> <!-- BEGIN Simple Chat Button Plugin --> <style> #simple-chat-button--container { position: fixed; bottom: 20px; right: 20px; z-index: 999999999; } #simple-chat-button--button { display: block; position: relative; text-decoration: none; width: 60px; height: 60px; border-radius: 50%; -webkit-transition: all 0.2s ease-in-out; transition: all 0.2s ease-in-out; -webkit-transform: scale(1); transform: scale(1); box-shadow: 0 6px 8px 2px rgba(0, 0, 0, .15); background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjU2IiB3aWR0aD0iMjU2IiB2aWV3Qm94PSItMjMgLTIxIDY4MiA2ODIuNjY3IiBmaWxsPSIjZmZmIiB4bWxuczp2PSJodHRwczovL3ZlY3RhLmlvL25hbm8iPjxwYXRoIGQ9Ik01NDQuMzg3IDkzLjAwOEM0ODQuNTEyIDMzLjA2MyA0MDQuODgzLjAzNSAzMjAuMDUxIDAgMTQ1LjI0NiAwIDIuOTggMTQyLjI2MiAyLjkxIDMxNy4xMTNjLS4wMjMgNTUuODk1IDE0LjU3OCAxMTAuNDU3IDQyLjMzMiAxNTguNTUxTC4yNSA2NDBsMTY4LjEyMS00NC4xMDJjNDYuMzI0IDI1LjI3IDk4LjQ3NyAzOC41ODYgMTUxLjU1MSAzOC42MDJoLjEzM2MxNzQuNzg1IDAgMzE3LjA2Ni0xNDIuMjczIDMxNy4xMzMtMzE3LjEzMy4wMzUtODQuNzQyLTMyLjkyMi0xNjQuNDE4LTkyLjgwMS0yMjQuMzU5ek0zMjAuMDUxIDU4MC45NDFoLS4xMDljLTQ3LjI5Ny0uMDItOTMuNjg0LTEyLjczLTEzNC4xNi0zNi43NDJsLTkuNjIxLTUuNzE1LTk5Ljc2NiAyNi4xNzIgMjYuNjI5LTk3LjI3LTYuMjctOS45NzNjLTI2LjM4Ny00MS45NjktNDAuMzItOTAuNDc3LTQwLjI5Ny0xNDAuMjgxLjA1NS0xNDUuMzMyIDExOC4zMDUtMjYzLjU3IDI2My42OTktMjYzLjU3IDcwLjQwNi4wMjMgMTM2LjU5IDI3LjQ3NyAxODYuMzU1IDc3LjMwMXM3Ny4xNTYgMTE2LjA1MSA3Ny4xMzMgMTg2LjQ4NGMtLjA2MiAxNDUuMzQ0LTExOC4zMDUgMjYzLjU5NC0yNjMuNTk0IDI2My41OTR6bTE0NC41ODYtMTk3LjQxOGMtNy45MjItMy45NjktNDYuODgzLTIzLjEzMy01NC4xNDgtMjUuNzgxLTcuMjU4LTIuNjQ1LTEyLjU0Ny0zLjk2MS0xNy44MjQgMy45NjktNS4yODUgNy45My0yMC40NjkgMjUuNzgxLTI1LjA5NCAzMS4wNjZzLTkuMjQyIDUuOTUzLTE3LjE2OCAxLjk4NC0zMy40NTctMTIuMzM2LTYzLjcyNy0zOS4zMzJjLTIzLjU1NS0yMS4wMTItMzkuNDU3LTQ2Ljk2MS00NC4wODItNTQuODkxLTQuNjE3LTcuOTM3LS4wMzktMTEuODEyIDMuNDc3LTE2LjE3MiA4LjU3OC0xMC42NTIgMTcuMTY4LTIxLjgyIDE5LjgwOS0yNy4xMDVzMS4zMi05LjkxOC0uNjY0LTEzLjg4M2MtMS45NzctMy45NjUtMTcuODI0LTQyLjk2OS0yNC40MjYtNTguODQtNi40MzctMTUuNDQ1LTEyLjk2NS0xMy4zNTktMTcuODMyLTEzLjYwMi00LjYxNy0uMjMtOS45MDItLjI3Ny0xNS4xODctLjI3N3MtMTMuODY3IDEuOTgtMjEuMTMzIDkuOTE4LTI3LjczIDI3LjEwMi0yNy43MyA2Ni4xMDUgMjguMzk1IDc2LjY4NCAzMi4zNTUgODEuOTczIDU1Ljg3OSA4NS4zMjggMTM1LjM2NyAxMTkuNjQ4YzE4LjkwNiA4LjE3MiAzMy42NjQgMTMuMDQzIDQ1LjE3NiAxNi42OTUgMTguOTg0IDYuMDMxIDM2LjI1NCA1LjE4IDQ5LjkxIDMuMTQxIDE1LjIyNy0yLjI3NyA0Ni44NzktMTkuMTcyIDUzLjQ4OC0zNy42OCA2LjYwMi0xOC41MTIgNi42MDItMzQuMzc1IDQuNjE3LTM3LjY4NC0xLjk3Ny0zLjMwNS03LjI2Mi01LjI4NS0xNS4xODQtOS4yNTR6bTAgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+") center/44px 44px no-repeat #25D366; } #simple-chat-button--text { display: block; position: absolute; width: max-content; background-color: #fff; bottom: 15px; right: 70px; border-radius: 5px; padding: 5px 10px; color: #000; font-size: 13px; font-weight: 700; letter-spacing: -0.03em; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; word-break: keep-all; line-height: 1em; text-overflow: ellipsis; vertical-align: middle; box-shadow: 0 6px 8px 2px rgba(0, 0, 0, .15); } #simple-chat-button--button:before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; right: 0; border-radius: 50%; -webkit-animation: scb-shockwave-animation 2s 5.3s ease-out infinite; animation: scb-shockwave-animation 2s 5.3s ease-out infinite; z-index: -1; } #simple-chat-button--button:hover { -webkit-transform: scale(1.06); transform: scale(1.06); -webkit-transition: all 0.2s ease-in-out; transition: all 0.2s ease-in-out; } @media only screen and (max-width: 1024px) { #simple-chat-button--container { bottom: 20px; } } @media only screen and (max-width: 768px) { #simple-chat-button--container { bottom: 20px; } } @-webkit-keyframes scb-shockwave-animation { 0% { -webkit-transform: scale(1); transform: scale(1); box-shadow: 0 0 2px rgba(0, 100, 0, .5), inset 0 0 1px rgba(0, 100, 0, .5); } 95% { box-shadow: 0 0 50px transparent, inset 0 0 30px transparent; } 100% { -webkit-transform: scale(1.2); transform: scale(1.2); } } @keyframes scb-shockwave-animation { 0% { -webkit-transform: scale(1); transform: scale(1); box-shadow: 0 0 2px rgba(0, 100, 0, .5), inset 0 0 1px rgba(0, 100, 0, .5); } 95% { box-shadow: 0 0 50px transparent, inset 0 0 30px transparent; } 100% { -webkit-transform: scale(1.2); transform: scale(1.2); } } </style> <div id="simple-chat-button--container"> <a id="simple-chat-button--button" href="https://api.whatsapp.com/send?phone=+972505544516&amp;text=Hello" target="_blank" rel="nofollow" aria-label="WhatsApp Chat Button"></a> <span id="simple-chat-button--text">להזמנות דברו איתנו בצ׳אט</span> </div> <!-- END Simple Chat Button Plugin -->         <script type="text/javascript">
           jQuery(function($) {
-              console.log('Cart script loaded');
+              // console.log('Cart script loaded');
               
               // Handle add to cart button clicks for both button classes
               $(document).on('click', '.add-to-cart-button, .single_add_to_cart_button', function(e) {
@@ -1151,7 +1151,7 @@
                   var $form = $button.closest('form.cart');
                   var redirect = $button.hasClass('btn-redirect') ? 1 : 0;
                   
-                  console.log('Button clicked with redirect:', redirect);
+                  // console.log('Button clicked with redirect:', redirect);
                   
                   // Add loading class
                   $form.addClass('loading');
@@ -1170,7 +1170,7 @@
                           _wc_ajax: 'add_to_cart'
                       },
                       success: function(response) {
-                          console.log('Add to cart success:', response);
+                          // console.log('Add to cart success:', response);
                           
                           // Update cart fragments
                           if (response.fragments) {
@@ -1260,8 +1260,8 @@
                       var isCheckoutBtn = $button.hasClass("btn-redirect");
                       
                       console.group("Add to Cart Clicked");
-                      console.log("Button type:", isCheckoutBtn ? "Checkout" : "Add to Cart");
-                      console.log("Product ID:", productId);
+                      // console.log("Button type:", isCheckoutBtn ? "Checkout" : "Add to Cart");
+                      // console.log("Product ID:", productId);
                       
                       // Validate required fields
                       var $dateFields = $form.find("input[name^=\"rental_date_\"]");
@@ -1291,10 +1291,10 @@
                       // Always set redirect parameter based on button class
                       if (isCheckoutBtn) {
                           formData.append("redirect", "1");
-                          console.log("Checkout flow: Will redirect to checkout after adding to cart");
+                          // console.log("Checkout flow: Will redirect to checkout after adding to cart");
                       }
                       
-                      console.log("Submitting form data:", Object.fromEntries(formData));
+                      // console.log("Submitting form data:", Object.fromEntries(formData));
                       
                       // Submit the form via AJAX
                       $.ajax({
@@ -1306,17 +1306,17 @@
                           dataType: "json",
                           success: function(response) {
                               console.group("Add to Cart Success");
-                              console.log("Response:", response);
+                              // console.log("Response:", response);
                               
                               if (response.error && response.product_url) {
-                                  console.log("Error response - redirecting to product URL:", response.product_url);
+                                  // console.log("Error response - redirecting to product URL:", response.product_url);
                                   window.location.href = response.product_url;
                                   return;
                               }
                               
                               // Update cart fragments
                               if (response.fragments) {
-                                  console.log("Updating cart fragments");
+                                  // console.log("Updating cart fragments");
                                   $.each(response.fragments, function(key, value) {
                                       $(key).replaceWith(value);
                                   });
@@ -1324,14 +1324,14 @@
                               
                               // Show success message
                               if (response.message) {
-                                  console.log("Showing success message");
+                                  // console.log("Showing success message");
                                   $(".woocommerce-error, .woocommerce-message").remove();
                                   $form.before("<div class=\"woocommerce-message\">" + response.message + "</div>");
                               }
                               
                               // Redirect to checkout if checkout button was clicked
                               if (isCheckoutBtn) {
-                                  console.log("Checkout button clicked - redirecting to checkout");
+                                  // console.log("Checkout button clicked - redirecting to checkout");
                                   window.location.href = wc_add_to_cart_params.checkout_url;
                                   return;
                               }
@@ -1347,7 +1347,7 @@
                               
                               // Fallback to default form submission with redirect parameter
                               if (isCheckoutBtn) {
-                                  console.log("AJAX failed - falling back to form submission with redirect");
+                                  // console.log("AJAX failed - falling back to form submission with redirect");
                                   $("<input>").attr({
                                       type: "hidden",
                                       name: "redirect",
@@ -1355,7 +1355,7 @@
                                   }).appendTo($form);
                               }
                               
-                              console.log("Falling back to default form submission");
+                              // console.log("Falling back to default form submission");
                               $form.off("submit").submit();
                           },
                           complete: function() {
@@ -1463,31 +1463,31 @@
           jQuery(document).ready(function($) {
               // Wait for calendar to be fully loaded
               setTimeout(function() {
-                  console.log('🛠 Stock Debugger - Calendar Loaded');
+                  // console.log('🛠 Stock Debugger - Calendar Loaded');
                   
                   // Extract initial stock from global variable
                   if (window.initialStock !== undefined) {
-                      console.log('🛠 Stock Debugger - Initial Stock from global:', window.initialStock);
+                      // console.log('🛠 Stock Debugger - Initial Stock from global:', window.initialStock);
                   }
                   
                   // Extract stock quantity from global variable
                   if (window.stockQuantity !== undefined) {
-                      console.log('🛠 Stock Debugger - Stock Quantity from global:', window.stockQuantity);
+                      // console.log('🛠 Stock Debugger - Stock Quantity from global:', window.stockQuantity);
                   }
                   
                   // Extract reserved dates from global variable
                   if (window.reservedDates !== undefined) {
-                      console.log('🛠 Stock Debugger - Reserved Dates from global:', window.reservedDates);
+                      // console.log('🛠 Stock Debugger - Reserved Dates from global:', window.reservedDates);
                   }
                   
                   // Extract reserved dates counts from global variable
                   if (window.reservedDatesCounts !== undefined) {
-                      console.log('🛠 Stock Debugger - Reserved Dates Counts from global:', window.reservedDatesCounts);
+                      // console.log('🛠 Stock Debugger - Reserved Dates Counts from global:', window.reservedDatesCounts);
                   }
                   
                   // Extract buffer dates from global variable
                   if (window.bufferDates !== undefined) {
-                      console.log('🛠 Stock Debugger - Buffer Dates from global:', window.bufferDates);
+                      // console.log('🛠 Stock Debugger - Buffer Dates from global:', window.bufferDates);
                   }
                   
                   // Add click handler to calendar cells to show debug info
@@ -1547,7 +1547,7 @@
       </script>
           <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
-          console.log('[WEEKEND OVERRIDE] Applying weekend booking fixes');
+          // console.log('[WEEKEND OVERRIDE] Applying weekend booking fixes');
           
           // Specifically fix errors about Saturdays (Shabbat)
           setInterval(function() {
@@ -1563,13 +1563,13 @@
           
           // Override the validateDateRange function from fallback-calendar.js
           if (window.originalValidateDateRange === undefined && window.validateDateRange) {
-              console.log('[WEEKEND OVERRIDE] Storing original validateDateRange function');
+              // console.log('[WEEKEND OVERRIDE] Storing original validateDateRange function');
               window.originalValidateDateRange = window.validateDateRange;
           }
           
           // Replace with function that always allows weekends
           window.validateDateRange = function(startDate, endDate) {
-              console.log('[WEEKEND OVERRIDE] Using weekend-friendly validation');
+              // console.log('[WEEKEND OVERRIDE] Using weekend-friendly validation');
               
               if (!startDate || !endDate) {
                   return false;
@@ -1596,7 +1596,7 @@
               return true;
           };
           
-          console.log('[WEEKEND OVERRIDE] Weekend booking fixes applied');
+          // console.log('[WEEKEND OVERRIDE] Weekend booking fixes applied');
       });
       </script>
       

@@ -36,6 +36,8 @@ class Stock_Debugger {
         
         // Add AJAX handlers
         add_action('wp_ajax_get_stock_debug_data', [$this, 'ajax_get_stock_debug_data']);
+        add_action('wp_ajax_mitnafun_get_stock_data', [$this, 'ajax_mitnafun_get_stock_data']);
+        add_action('wp_ajax_nopriv_mitnafun_get_stock_data', [$this, 'ajax_mitnafun_get_stock_data']);
     }
     
     /**
@@ -345,7 +347,7 @@ class Stock_Debugger {
         // Only include debug info in development mode
         if (defined('WP_DEBUG') && WP_DEBUG) {
             echo 'console.groupCollapsed("Stock Debugger: Reservation Data");\n';
-            echo 'console.log(' . wp_json_encode($output, JSON_PRETTY_PRINT) . ');\n';
+            echo '// console.log(' . wp_json_encode($output, JSON_PRETTY_PRINT) . ');\n';
             echo 'console.groupEnd();\n';
             
             // Log to PHP error log
@@ -893,5 +895,70 @@ class Stock_Debugger {
             'buffer_dates' => $buffer_dates,
             'active_rentals' => $active_rentals,
         ]);
+    }
+    
+    /**
+     * AJAX handler for the improved stock debugger
+     */
+    public function ajax_mitnafun_get_stock_data() {
+        // Check nonce for security
+        if (!check_ajax_referer('mitnafun-actions-nonce', 'security', false)) {
+            wp_send_json_error([
+                'message' => __('Security check failed', 'mitnafun-order-admin'),
+                'debug' => [
+                    'received_nonce' => isset($_REQUEST['security']) ? $_REQUEST['security'] : 'not set',
+                    'nonce_verified' => wp_verify_nonce($_REQUEST['security'] ?? '', 'mitnafun-actions-nonce'),
+                    'server_time' => current_time('mysql'),
+                    'user_can' => current_user_can('manage_options') ? 'admin' : 'guest'
+                ]
+            ]);
+            return;
+        }
+        
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+        
+        if (!$product_id) {
+            wp_send_json_error(['message' => __('Invalid product ID', 'mitnafun-order-admin')]);
+            return;
+        }
+        
+        $product = wc_get_product($product_id);
+        
+        if (!$product) {
+            wp_send_json_error(['message' => __('Product not found', 'mitnafun-order-admin')]);
+            return;
+        }
+        
+        // Get initial stock from meta or use current stock if not set
+        $initial_stock = (int) get_post_meta($product_id, '_initial_stock', true);
+        if (!$initial_stock) {
+            $initial_stock = $product->get_stock_quantity();
+            update_post_meta($product_id, '_initial_stock', $initial_stock);
+        }
+        
+        // Get reserved dates and calculate reserved stock
+        $reserved_data = $this->get_reserved_dates($product_id);
+        $reserved_dates = isset($reserved_data['reservations']) ? $reserved_data['reservations'] : [];
+        $reserved_stock = 0;
+        
+        // Count unique reservations (each reservation takes 1 unit regardless of date range)
+        $reserved_stock = count($reserved_dates);
+        
+        // Get active rentals
+        $active_rentals = $this->get_active_rentals($product_id);
+        
+        // Prepare response
+        $response = [
+            'initial_stock' => $initial_stock,
+            'current_stock' => $product->get_stock_quantity(),
+            'reserved_stock' => $reserved_stock,
+            'available_stock' => max(0, $initial_stock - $reserved_stock),
+            'stock_status' => $product->get_stock_status(),
+            'active_reservations' => $active_rentals,
+            'reserved_dates' => $reserved_dates,
+            'is_fully_booked' => $reserved_stock >= $initial_stock
+        ];
+        
+        wp_send_json_success($response);
     }
 }

@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
     const $debugPanel = $('#stock-debugger');
     
     if (!$debugPanel.length) {
-        console.log('Stock debugger panel not found');
+        // console.log('Stock debugger panel not found');
         return;
     }
     
@@ -50,5 +50,5 @@ jQuery(document).ready(function($) {
         $('.debug-toggle').text('►');
     }
     
-    console.log('Stock debugger collapsible functionality initialized');
+    // console.log('Stock debugger collapsible functionality initialized');
 });

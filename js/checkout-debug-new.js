@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
     }
 
     // Log to console for debugging
-    console.log('Debug script loaded successfully');
+    // console.log('Debug script loaded successfully');
 
     // Function to get stock information via AJAX
     function getProductStockInfo(productId) {
@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
     function processCartItems() {
         const $cartItems = $('.woocommerce-checkout-review-order-table .cart_item');
         if ($cartItems.length === 0) {
-            console.log('No cart items found');
+            // console.log('No cart items found');
             return;
         }
 
@@ -57,13 +57,13 @@ jQuery(document).ready(function($) {
             const $item = $(this);
             const { productName, quantity, productId } = extractProductInfo($item);
             
-            console.log(`Processing item: ${productName}`);
-            console.log(`Quantity: ${quantity}`);
+            // console.log(`Processing item: ${productName}`);
+            // console.log(`Quantity: ${quantity}`);
             
             if (productId) {
                 getProductStockInfo(productId).then(stockInfo => {
                     if (stockInfo) {
-                        console.log('Stock Info:', stockInfo);
+                        // console.log('Stock Info:', stockInfo);
                     }
                 }).catch(error => {
                     console.error('Error getting stock info:', error);
@@ -77,7 +77,7 @@ jQuery(document).ready(function($) {
 
     // Handle checkout updates
     $(document.body).on('updated_checkout', function() {
-        console.log('Order review updated - refreshing cart data...');
+        // console.log('Order review updated - refreshing cart data...');
         processCartItems();
     });
 });

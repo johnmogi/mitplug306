@@ -15,7 +15,7 @@ jQuery(document).ready(function($) {
         var formData = $form.serialize();
         
         // Log the form data for debugging
-        console.log('Form data:', formData);
+        // console.log('Form data:', formData);
         
         // Get the product ID from the button value
         var product_id = $button.val();
@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
                 }
                 
                 // Log attempt to console
-                console.log('Sending add to cart request:', data);
+                // console.log('Sending add to cart request:', data);
                 
                 // Temporarily store cart data in sessionStorage as backup
                 try {
@@ -118,7 +118,7 @@ jQuery(document).ready(function($) {
                 // Show added to cart message
                 if (response.message) {
                     // You might want to show a nice notification here
-                    console.log('Product added to cart:', response.message);
+                    // console.log('Product added to cart:', response.message);
                 }
                 
                 // Re-enable the button

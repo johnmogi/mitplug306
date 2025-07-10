@@ -91,7 +91,7 @@ jQuery(document).ready(function($) {
     
     // Process cart items
     async function processCartItems(items) {
-        console.log('Processing cart items:', items);
+        // console.log('Processing cart items:', items);
         if (!items || !Array.isArray(items) || items.length === 0) {
             updateDebugPanel('<div class="debug-item warning">No items found in cart</div>');
             return;
@@ -216,11 +216,11 @@ jQuery(document).ready(function($) {
     
     // Function to fetch cart contents
     function fetchCartContents() {
-        console.log('Attempting to fetch cart contents...');
+        // console.log('Attempting to fetch cart contents...');
         
         // First, try to use the WooCommerce cart object if it exists
         if (typeof wc_cart_fragments !== 'undefined' && wc_cart_fragments.cart) {
-            console.log('WooCommerce cart fragments found');
+            // console.log('WooCommerce cart fragments found');
             if (wc_cart_fragments.cart.cart_contents) {
                 const cartItems = Object.values(wc_cart_fragments.cart.cart_contents);
                 processCartItems(cartItems);
@@ -234,22 +234,22 @@ jQuery(document).ready(function($) {
     
     // Function to get cart data from the page
     function fetchCartFromPage() {
-        console.log('Looking for cart data in the page...');
+        // console.log('Looking for cart data in the page...');
         
         // Try to find the order review table
         const $orderReview = $('.woocommerce-checkout-review-order-table');
         
         if ($orderReview.length) {
-            console.log('Found order review table, extracting items...');
+            // console.log('Found order review table, extracting items...');
             extractCartItems($orderReview);
         } else {
-            console.log('Order review table not found, checking for cart items...');
+            // console.log('Order review table not found, checking for cart items...');
             
             // Try to find cart items in other common locations
             const $cartItems = $('.cart_item, .woocommerce-cart-form__cart-item');
             
             if ($cartItems.length) {
-                console.log(`Found ${$cartItems.length} cart items in the page`);
+                // console.log(`Found ${$cartItems.length} cart items in the page`);
                 extractCartItems($cartItems);
             } else {
                 showDebugError('No cart items found on the page. Please add items to your cart.');
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
         });
         
         if (foundItems) {
-            console.log('Extracted cart items:', cartItems);
+            // console.log('Extracted cart items:', cartItems);
             
             // Create a cart structure that processCartItems expects
             if (typeof wc_cart_fragments === 'undefined') {
@@ -319,7 +319,7 @@ jQuery(document).ready(function($) {
     
     // Function to fetch cart contents directly from WooCommerce REST API
     function fetchCartDirectly() {
-        console.log('Fetching cart contents directly...');
+        // console.log('Fetching cart contents directly...');
         
         // Try to get the AJAX URL from different possible locations
         let ajaxUrl = '';
@@ -333,7 +333,7 @@ jQuery(document).ready(function($) {
             ajaxUrl = window.location.origin + '/wp-admin/admin-ajax.php';
         }
         
-        console.log('Using AJAX URL:', ajaxUrl);
+        // console.log('Using AJAX URL:', ajaxUrl);
         
         // First try the standard WooCommerce cart endpoint
         $.ajax({
@@ -343,7 +343,7 @@ jQuery(document).ready(function($) {
                 'wc-ajax': 'get_cart'
             },
             success: function(response) {
-                console.log('Received direct cart response:', response);
+                // console.log('Received direct cart response:', response);
                 
                 // Try to parse the response if it's a string
                 if (typeof response === 'string') {
@@ -372,11 +372,11 @@ jQuery(document).ready(function($) {
                             updateDebugPanel('<div class="debug-item stock-error">No cart contents found in fragments</div>');
                         }
                     } else {
-                        console.log('No cart contents in fragments, trying alternative method...');
+                        // console.log('No cart contents in fragments, trying alternative method...');
                         fetchCartAlternative();
                     }
                 } else {
-                    console.log('No fragments in response, trying alternative method...');
+                    // console.log('No fragments in response, trying alternative method...');
                     fetchCartAlternative();
                 }
             },
@@ -389,7 +389,7 @@ jQuery(document).ready(function($) {
     
     // Alternative method to fetch cart contents
     function fetchCartAlternative() {
-        console.log('Trying alternative method to fetch cart...');
+        // console.log('Trying alternative method to fetch cart...');
         
         // Try to get cart from the page
         if (typeof wc_cart_fragments === 'undefined') {
@@ -425,7 +425,7 @@ jQuery(document).ready(function($) {
         });
         
         if (foundItems) {
-            console.log('Found cart items in the page:', cartData);
+            // console.log('Found cart items in the page:', cartData);
             
             // Create a minimal cart structure
             const cartContents = {};
@@ -460,23 +460,23 @@ jQuery(document).ready(function($) {
     
     // Initialize debug panel
     function initializeDebugPanel() {
-        console.log('Initializing debug panel...');
+        // console.log('Initializing debug panel...');
         updateDebugPanel('<div class="debug-loading">Loading product stock information...</div>');
         
         // Check if WooCommerce is loaded
         if (typeof wc_cart_fragments !== 'undefined') {
-            console.log('WooCommerce cart fragments found');
+            // console.log('WooCommerce cart fragments found');
             
             if (wc_cart_fragments.cart && wc_cart_fragments.cart.cart_contents) {
-                console.log('Cart contents found, processing items...');
+                // console.log('Cart contents found, processing items...');
                 const cartItems = Object.values(wc_cart_fragments.cart.cart_contents);
                 processCartItems(cartItems);
             } else {
-                console.log('No cart contents found in fragments, trying AJAX...');
+                // console.log('No cart contents found in fragments, trying AJAX...');
                 fetchCartContents();
             }
         } else {
-            console.log('WooCommerce cart fragments not found, trying AJAX...');
+            // console.log('WooCommerce cart fragments not found, trying AJAX...');
             fetchCartContents();
         }
     }
@@ -491,14 +491,14 @@ jQuery(document).ready(function($) {
         
         // Listen for WooCommerce cart updates
         $(document.body).on('updated_wc_div updated_cart_totals updated_checkout', function() {
-            console.log('WooCommerce updated, refreshing debug panel...');
+            // console.log('WooCommerce updated, refreshing debug panel...');
             initializeDebugPanel();
         });
     });
     
     // Log when the order review updates
     $(document.body).on('updated_checkout', function() {
-        console.log('Order review updated - refreshing cart data...');
+        // console.log('Order review updated - refreshing cart data...');
         processCartItems();
     });
     

@@ -1,9 +1,9 @@
 // alert(' admin.js is loaded and running');
-// console.log('%c Mitnafun admin.js confirmed active ', 'color: white; background: green; font-weight: bold; padding: 4px;');
+// // console.log('%c Mitnafun admin.js confirmed active ', 'color: white; background: green; font-weight: bold; padding: 4px;');
 
 
 jQuery(document).ready(function($) {
-    console.log('Mitnafun Admin initialized ...');
+    // console.log('Mitnafun Admin initialized ...');
     
     // Show notice function for displaying status messages
     function showNotice(type, message) {
@@ -44,12 +44,12 @@ jQuery(document).ready(function($) {
         activate: function(event, ui) {
             // When calendar tab is activated, trigger resize
             if (ui.newPanel.attr('id') === 'mitnafun-tab-calendar') {
-                console.log('Calendar tab activated');
+                // console.log('Calendar tab activated');
                 setTimeout(function() {
                     if (window.calendar) {
                         window.calendar.render();
                         window.calendar.updateSize();
-                        console.log('Calendar size updated after tab activation');
+                        // console.log('Calendar size updated after tab activation');
                     }
                 }, 100);
             }
@@ -60,9 +60,9 @@ jQuery(document).ready(function($) {
 
     // Initialize booking calendar using FullCalendar
     if (typeof FullCalendar !== 'undefined') {
-        console.log('FullCalendar is available');
+        // console.log('FullCalendar is available');
         var calendarEl = document.getElementById('mitnafun-calendar');
-        console.log('Calendar element found:', calendarEl);
+        // console.log('Calendar element found:', calendarEl);
         var calendar = null; // Will hold calendar instance
         
         // Global cache for events to prevent regeneration
@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
         };
         
         if (calendarEl) {
-            console.log('Creating calendar instance');
+            // console.log('Creating calendar instance');
             // Set explicit height and width on the element
             calendarEl.style.height = '800px';
             calendarEl.style.width = '100%';
@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
                 stickyHeaderDates: true,
                 // Events fetching function
                 events: function(info, successCallback, failureCallback) {
-                    console.log('Fetching calendar events for range:', info.start, info.end);
+                    // console.log('Fetching calendar events for range:', info.start, info.end);
                     
                     // First, try to load orders directly
                     loadOrdersForCalendar(info, successCallback, failureCallback);
@@ -128,16 +128,16 @@ jQuery(document).ready(function($) {
             
             // Store calendar in global scope and render it
             window.calendar = calendar;
-            console.log('Attempting to render calendar');
+            // console.log('Attempting to render calendar');
             
             // Add a delay to ensure DOM is ready
             setTimeout(function() {
                 calendar.render();
-                console.log('Calendar rendering complete');
+                // console.log('Calendar rendering complete');
                 
                 // Force size update after a delay
                 setTimeout(function() {
-                    console.log('Forcing calendar size update after render');
+                    // console.log('Forcing calendar size update after render');
                     if (window.calendar) {
                         window.calendar.updateSize();
                     }
@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
             
             // Button click handler
             $('#refresh-calendar').click(function() {
-                console.log('Refreshing calendar');
+                // console.log('Refreshing calendar');
                 window.calendar.refetchEvents();
                 window.calendar.updateSize();
             });
@@ -199,7 +199,7 @@ jQuery(document).ready(function($) {
     function loadOrders() {
         const $ordersList = $('#orders-list tbody');
         if (!$ordersList.length) {
-            console.log('Orders table not found');
+            // console.log('Orders table not found');
             return;
         }
         
@@ -292,10 +292,10 @@ jQuery(document).ready(function($) {
 
     // Load clients data via AJAX
     function loadClients() {
-        console.log('Loading clients...');
+        // console.log('Loading clients...');
         const $clientsTable = $('#clients-table tbody');
         if (!$clientsTable.length) {
-            console.log('Clients table not found');
+            // console.log('Clients table not found');
             return;
         }
         
@@ -309,7 +309,7 @@ jQuery(document).ready(function($) {
                 nonce: mitnafunAdmin.nonce
             },
             success: function(response) {
-                console.log('Clients response:', response);
+                // console.log('Clients response:', response);
                 if (response.success && response.data && response.data.clients) {
                     const clients = response.data.clients;
                     if (clients.length === 0) {
@@ -360,10 +360,10 @@ jQuery(document).ready(function($) {
 
     // Load products data via AJAX
     function loadProducts() {
-        console.log('Loading products...');
+        // console.log('Loading products...');
         const $productsTable = $('#products-table tbody');
         if (!$productsTable.length) {
-            console.log('Products table not found');
+            // console.log('Products table not found');
             return;
         }
         
@@ -377,7 +377,7 @@ jQuery(document).ready(function($) {
                 nonce: mitnafunAdmin.nonce
             },
             success: function(response) {
-                console.log('Products response:', response);
+                // console.log('Products response:', response);
                 if (response.success && response.data && response.data.products) {
                     const products = response.data.products;
                     if (products.length === 0) {
@@ -398,20 +398,20 @@ jQuery(document).ready(function($) {
 
 // Initialize all tables
 function initTables() {
-    console.log('Initializing tables...');
+    // console.log('Initializing tables...');
     loadOrders();
     loadClients();
     loadProducts();
     
     // Load stock data for the Stock Monitor tab
     $(document).on('click', '#mitnafun-tab-stock a', function() {
-        console.log('Stock tab clicked, loading stock data...');
+        // console.log('Stock tab clicked, loading stock data...');
         loadStockData();
     });
     
     // Also load stock data when the page loads if we're on the stock tab
     if ($('#mitnafun-tab-stock').hasClass('ui-tabs-active')) {
-        console.log('Stock tab is active, loading stock data...');
+        // console.log('Stock tab is active, loading stock data...');
         loadStockData();
     }
     
@@ -470,9 +470,9 @@ function initTables() {
         }
         
         console.group('=== loadStockData ===');
-        console.log('Filters:', filters);
-        console.log('AJAX URL:', mitnafunAdmin.ajaxUrl);
-        console.log('Nonce:', mitnafunAdmin.nonce);
+        // console.log('Filters:', filters);
+        // console.log('AJAX URL:', mitnafunAdmin.ajaxUrl);
+        // console.log('Nonce:', mitnafunAdmin.nonce);
         
         // Check if the admin object is properly loaded
         if (typeof mitnafunAdmin === 'undefined') {
@@ -483,8 +483,8 @@ function initTables() {
         
         $stockList.html('<tr><td colspan="8" class="mitnafun-loading">Loading stock data...</td></tr>');
         
-        console.log('Sending AJAX request to:', mitnafunAdmin.ajaxUrl);
-        console.log('Request data:', {
+        // console.log('Sending AJAX request to:', mitnafunAdmin.ajaxUrl);
+        // console.log('Request data:', {
             action: 'mitnafun_get_stock_data',
             nonce: mitnafunAdmin.nonce,
             product_filter: filters.product_id || '',
@@ -501,9 +501,9 @@ function initTables() {
                 stock_status: filters.stock_status || ''
             },
             success: function(response, status, xhr) {
-                console.log('AJAX response received:', response);
-                console.log('Status:', status);
-                console.log('XHR:', xhr);
+                // console.log('AJAX response received:', response);
+                // console.log('Status:', status);
+                // console.log('XHR:', xhr);
                 
                 if (!response) {
                     console.error('Empty response received');
@@ -791,7 +791,7 @@ function createSampleEvents(info, successCallback) {
     });
     
     const products = window.mitnafunCache.productData || [];
-    console.log('Products with rental data:', products);
+    // console.log('Products with rental data:', products);
     
     // First try to extract rental dates from product history
     if (products.length > 0) {
@@ -812,7 +812,7 @@ function createSampleEvents(info, successCallback) {
                 return eventStart < rangeEnd && eventEnd > rangeStart;
             });
             
-            console.log('Created events from product rental history:', filteredEvents);
+            // console.log('Created events from product rental history:', filteredEvents);
             successCallback(filteredEvents);
             return;
         }
@@ -896,7 +896,7 @@ function extractRentalDates(rentalHistory) {
                 startDate = currentYear + '-' + startMonth + '-' + startDay;
                 endDate = currentYear + '-' + endMonth + '-' + endDay;
                 
-                console.log('Parsed short date format:', historyItem, 'to', startDate, '-', endDate);
+                // console.log('Parsed short date format:', historyItem, 'to', startDate, '-', endDate);
             } else {
                 // Format: "1002 28.4-30.4" (meaning Order #1002: April 28 - April 30)
                 match = historyItem.match(/(\d+)\s+(\d+)\.(\d+)-(\d+)\.(\d+)/);
@@ -913,10 +913,10 @@ function extractRentalDates(rentalHistory) {
                     startDate = currentYear + '-' + startMonth + '-' + startDay;
                     endDate = currentYear + '-' + endMonth + '-' + endDay;
                     
-                    console.log('Parsed compact date format:', historyItem, 'to', startDate, '-', endDate);
+                    // console.log('Parsed compact date format:', historyItem, 'to', startDate, '-', endDate);
                 } else {
                     // Try to detect any date-like pattern
-                    console.log('Could not parse date format:', historyItem);
+                    // console.log('Could not parse date format:', historyItem);
                     return; // Skip this item - fix for lint error
                 }
             }
@@ -1017,7 +1017,7 @@ function loadClientBasedEvents(info, successCallback) {
                 allDay: true
             });
             
-            console.log('Created sample event for client:', client.email);
+            // console.log('Created sample event for client:', client.email);
         }
     });
     
@@ -1035,7 +1035,7 @@ function loadClientBasedEvents(info, successCallback) {
         return eventStart < rangeEnd && eventEnd > rangeStart;
     });
     
-    console.log('Created sample events from client data:', filteredEvents.length, 'events for current view');
+    // console.log('Created sample events from client data:', filteredEvents.length, 'events for current view');
     successCallback(filteredEvents);
 }
 
@@ -1066,7 +1066,7 @@ function getOrderStatusColor(status) {
 function loadOrdersForCalendar(info, successCallback, failureCallback) {
     // Create sample events in case the AJAX request fails
     const createFallbackEvents = function() {
-        console.log('Creating fallback events with your sample order data');
+        // console.log('Creating fallback events with your sample order data');
         const events = [];
         
         // Internal function for status colors
@@ -1141,7 +1141,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
             }
         });
         
-        console.log('Created', events.length, 'fallback events');
+        // console.log('Created', events.length, 'fallback events');
         return events;
     };
 
@@ -1157,7 +1157,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
             status: ''    // This one matches already
         },
         success: function(response) {
-            console.log('Order data loaded for calendar:', response);
+            // console.log('Order data loaded for calendar:', response);
             
             if (response.success && response.data && response.data.orders) {
                 const orders = response.data.orders;
@@ -1167,7 +1167,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
                 orders.forEach(function(order) {
                     // Skip orders without rental dates
                     if (!order.rental_dates || order.rental_dates === 'N/A') {
-                        console.log('Skipping order without rental dates:', order.order_id);
+                        // console.log('Skipping order without rental dates:', order.order_id);
                         return;
                     }
                     
@@ -1202,7 +1202,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
                                     allDay: true
                                 });
                                 
-                                console.log('Created event from order:', order.order_id, 'Date range:', startDate, '-', endDate);
+                                // console.log('Created event from order:', order.order_id, 'Date range:', startDate, '-', endDate);
                             } else {
                                 console.error('Failed to parse dates:', dates[0], dates[1]);
                             }
@@ -1235,7 +1235,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
                                     allDay: true
                                 });
                                 
-                                console.log('Created event from order with single date:', order.order_id, 'Date:', isoDate);
+                                // console.log('Created event from order with single date:', order.order_id, 'Date:', isoDate);
                             }
                         });
                     } else {
@@ -1264,7 +1264,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
                                 allDay: true
                             });
                             
-                            console.log('Created event from order with single date:', order.order_id, 'Date:', isoDate);
+                            // console.log('Created event from order with single date:', order.order_id, 'Date:', isoDate);
                         } else {
                             console.error('Failed to parse date format:', dateRange);
                         }
@@ -1272,11 +1272,11 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
                 });
                 
                 // Return the processed events
-                console.log('Created', events.length, 'events from', orders.length, 'orders');
+                // console.log('Created', events.length, 'events from', orders.length, 'orders');
                 window.mitnafunCache.orderData = orders;
                 successCallback(events);
             } else {
-                console.log('No orders found or invalid response format - using fallback events');
+                // console.log('No orders found or invalid response format - using fallback events');
                 // Use fallback events if no orders found
                 successCallback(createFallbackEvents());
             }
@@ -1284,7 +1284,7 @@ function loadOrdersForCalendar(info, successCallback, failureCallback) {
         error: function(xhr, status, error) {
             console.error('AJAX error loading orders:', error);
             // Use fallback events on AJAX error
-            console.log('Using fallback events due to AJAX error');
+            // console.log('Using fallback events due to AJAX error');
             successCallback(createFallbackEvents());
         }
     });

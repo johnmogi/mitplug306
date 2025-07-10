@@ -11,8 +11,8 @@ jQuery(document).ready(function($) {
     }
     window.mitnafunDebugInitialized = true;
 
-    console.log('=== Mitnafun Order Admin: Checkout Debug ===');
-    console.log('Debug script loaded successfully');
+    // console.log('=== Mitnafun Order Admin: Checkout Debug ===');
+    // console.log('Debug script loaded successfully');
 
     // Create and add the debug panel to the page
     var debugPanel = $('<div id="mitnafun-debug-message" style="position: fixed; top: 20px; right: 20px; background: #fff; padding: 10px; border: 1px solid #ccc; z-index: 9999; max-height: 80vh; overflow-y: auto; width: 300px;">' +
@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
             if (!productId) {
                 const productName = $(item).find('.product-name').text();
                 if (productName && productName.indexOf('מגה סלייד דקלים') !== -1) {
-                    console.log('Found special product by name: מגה סלייד דקלים');
+                    // console.log('Found special product by name: מגה סלייד דקלים');
                     return 4217;
                 }
             }
@@ -131,7 +131,7 @@ jQuery(document).ready(function($) {
                 },
                 success: function(response) {
                     if (response.success && response.data) {
-                        console.log('Stock data received for product ' + productId + ':', response.data);
+                        // console.log('Stock data received for product ' + productId + ':', response.data);
                         resolve({
                             stock: response.data.stock,
                             initialStock: response.data.initial_stock
@@ -140,7 +140,7 @@ jQuery(document).ready(function($) {
                         console.warn('Invalid response for product ' + productId + ':', response);
                         // Fallback for product ID 4217
                         if (isMegaSlide) {
-                            console.log('Using fallback data for מגה סלייד דקלים (ID: 4217)');
+                            // console.log('Using fallback data for מגה סלייד דקלים (ID: 4217)');
                             resolve({ stock: 10, initialStock: 20 });
                         } else {
                             resolve({ stock: null, initialStock: null });
@@ -151,7 +151,7 @@ jQuery(document).ready(function($) {
                     console.error('AJAX error for product ' + productId + ':', error);
                     // Fallback for product ID 4217
                     if (isMegaSlide) {
-                        console.log('Using fallback data for מגה סלייד דקלים (ID: 4217)');
+                        // console.log('Using fallback data for מגה סלייד דקלים (ID: 4217)');
                         resolve({ stock: 10, initialStock: 20 });
                     } else {
                         resolve({ stock: null, initialStock: null });
@@ -171,12 +171,12 @@ jQuery(document).ready(function($) {
         
         if (cartItems.length === 0) {
             cartItemsContainer.html('<p>No cart items found</p>');
-            console.log('No cart items found');
+            // console.log('No cart items found');
             console.groupEnd();
             return;
         }
         
-        console.log('Found ' + cartItems.length + ' cart items');
+        // console.log('Found ' + cartItems.length + ' cart items');
         cartItemsContainer.empty();
         
         // Process each cart item
@@ -186,7 +186,7 @@ jQuery(document).ready(function($) {
             const rentalDates = getRentalDates(item);
             const quantity = getQuantity(item);
             
-            console.log('Cart item ' + (index + 1) + ':', {
+            // console.log('Cart item ' + (index + 1) + ':', {
                 productId: productId,
                 rentalDates: rentalDates,
                 quantity: quantity
@@ -244,17 +244,17 @@ jQuery(document).ready(function($) {
     // Initialize when checkout elements are loaded
     function initializeDebugger() {
         if ($('.woocommerce-checkout').length || $('.cart_item').length) {
-            console.log('Checkout page detected, initializing debugger');
+            // console.log('Checkout page detected, initializing debugger');
             processCartItems();
             
             // Listen for checkout updates
             $(document.body).on('updated_checkout', function() {
-                console.log('Checkout updated, refreshing debug info');
+                // console.log('Checkout updated, refreshing debug info');
                 processCartItems();
                 $('#last-updated').text(new Date().toLocaleTimeString());
             });
         } else {
-            console.log('Waiting for checkout elements to load...');
+            // console.log('Waiting for checkout elements to load...');
             setTimeout(initializeDebugger, 1000);
         }
     }

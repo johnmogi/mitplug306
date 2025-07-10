@@ -93,7 +93,7 @@
             return;
         }
         
-        console.log('Highlighting calendar dates with stock:', stock, 'reservations:', dateReservations);
+        // console.log('Highlighting calendar dates with stock:', stock, 'reservations:', dateReservations);
         
         // First, remove any existing highlights
         $('.day-cell').removeClass('fully-booked partially-booked');
@@ -135,7 +135,7 @@
                     }
                     $dateCells.attr('title', title);
                     
-                    console.log('Highlighted date:', dateToCheck, {
+                    // console.log('Highlighted date:', dateToCheck, {
                         cells: $dateCells.length,
                         isFullyBooked: isFullyBooked,
                         count: data.count,
@@ -341,7 +341,7 @@
             // Render the stock and reservation data
             renderStockData();
             
-            console.log('Stock Debugger: Debug panel initialized');
+            // console.log('Stock Debugger: Debug panel initialized');
         } catch (error) {
             console.error('Error initializing debug panel:', error);
         }
@@ -402,7 +402,7 @@
                 }
             });
             
-            console.log('Stock Debugger: Event listeners set up');
+            // console.log('Stock Debugger: Event listeners set up');
         } catch (error) {
             console.error('Error setting up event listeners:', error);
         }
@@ -417,7 +417,7 @@
             var stockText = $('.stock-availability').text().trim();
             var stockMatch = stockText && stockText.match(/(\d+)/);
             var stock = stockMatch ? parseInt(stockMatch[1], 10) : 0;
-            console.log('Stock Debugger: Found stock in DOM:', stock);
+            // console.log('Stock Debugger: Found stock in DOM:', stock);
             return stock;
         } catch (error) {
             console.error('Error getting stock from DOM:', error);
@@ -446,7 +446,7 @@
             var reservedData = window.rentalReservedData || [];
             var dateReservations = {};
             
-            console.log('Stock Debugger: Initializing with stock', stock, 'and', reservedData.length, 'reservations');
+            // console.log('Stock Debugger: Initializing with stock', stock, 'and', reservedData.length, 'reservations');
             
             // Process reservations
             reservedData.forEach(function(item) {
@@ -495,7 +495,7 @@
             // Set up event listeners
             setupEventListeners(dateReservations, stock);
             
-            console.log('Stock Debugger: Initialization complete');
+            // console.log('Stock Debugger: Initialization complete');
         } catch (error) {
             console.error('Error in initStockDebugger:', error);
         }
@@ -513,7 +513,7 @@
                     if (mutation.type === 'childList' || mutation.type === 'characterData') {
                         var newStock = getStockFromDOM();
                         if (newStock !== window.lastStock) {
-                            console.log('Stock changed from', window.lastStock, 'to', newStock);
+                            // console.log('Stock changed from', window.lastStock, 'to', newStock);
                             window.lastStock = newStock;
                             // Reinitialize debugger with new stock value
                             initStockDebugger();

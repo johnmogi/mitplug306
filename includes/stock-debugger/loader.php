@@ -58,31 +58,31 @@ function mitnafun_add_calendar_debugger() {
         jQuery(document).ready(function($) {
             // Wait for calendar to be fully loaded
             setTimeout(function() {
-                console.log('🛠 Stock Debugger - Calendar Loaded');
+                // console.log('🛠 Stock Debugger - Calendar Loaded');
                 
                 // Extract initial stock from global variable
                 if (window.initialStock !== undefined) {
-                    console.log('🛠 Stock Debugger - Initial Stock from global:', window.initialStock);
+                    // console.log('🛠 Stock Debugger - Initial Stock from global:', window.initialStock);
                 }
                 
                 // Extract stock quantity from global variable
                 if (window.stockQuantity !== undefined) {
-                    console.log('🛠 Stock Debugger - Stock Quantity from global:', window.stockQuantity);
+                    // console.log('🛠 Stock Debugger - Stock Quantity from global:', window.stockQuantity);
                 }
                 
                 // Extract reserved dates from global variable
                 if (window.reservedDates !== undefined) {
-                    console.log('🛠 Stock Debugger - Reserved Dates from global:', window.reservedDates);
+                    // console.log('🛠 Stock Debugger - Reserved Dates from global:', window.reservedDates);
                 }
                 
                 // Extract reserved dates counts from global variable
                 if (window.reservedDatesCounts !== undefined) {
-                    console.log('🛠 Stock Debugger - Reserved Dates Counts from global:', window.reservedDatesCounts);
+                    // console.log('🛠 Stock Debugger - Reserved Dates Counts from global:', window.reservedDatesCounts);
                 }
                 
                 // Extract buffer dates from global variable
                 if (window.bufferDates !== undefined) {
-                    console.log('🛠 Stock Debugger - Buffer Dates from global:', window.bufferDates);
+                    // console.log('🛠 Stock Debugger - Buffer Dates from global:', window.bufferDates);
                 }
                 
                 // Add click handler to calendar cells to show debug info

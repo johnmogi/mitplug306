@@ -334,7 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             var attempts = 0;
             var maxAttempts = 5;
             var checkInterval = setInterval(function() {
-                console.log('Checking for AirDatepicker, attempt ' + (attempts + 1));
+                // console.log('Checking for AirDatepicker, attempt ' + (attempts + 1));
                 if (checkAndInitDatepicker() || ++attempts >= maxAttempts) {
                     clearInterval(checkInterval);
                     if (attempts >= maxAttempts && typeof AirDatepicker === 'undefined') {
@@ -527,7 +527,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $('.single_add_to_cart_button').prop('disabled', true);
                 
                 function updatePriceBreakdown(basePrice, totalDays, discountType, discountValue) {
-                    console.log('%c PRICE DEBUG', 'background: #f0f; color: white; padding: 2px 5px; border-radius: 3px;', {
+                    // console.log('%c PRICE DEBUG', 'background: #f0f; color: white; padding: 2px 5px; border-radius: 3px;', {
                         basePrice, 
                         totalDays, 
                         discountType, 
@@ -541,7 +541,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         try {
                             const priceTxt = $('.woocommerce-Price-amount').first().text().trim();
                             basePrice = parseFloat(priceTxt.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                            console.log(' Retrieved basePrice from DOM:', basePrice);
+                            // console.log(' Retrieved basePrice from DOM:', basePrice);
                         } catch (e) {
                             console.error('Failed to get basePrice from DOM:', e);
                             return;
@@ -559,18 +559,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     let savings = 0;
                     let totalPrice = basePrice; // First day is always full price
                     
-                    console.log(' Initial totalPrice', totalPrice);
+                    // console.log(' Initial totalPrice', totalPrice);
                     
                     // If more than one day, calculate additional days with discount
                     if (totalDays > 1) {
                         const additionalDays = totalDays - 1;
-                        console.log(' additionalDays', additionalDays);
+                        // console.log(' additionalDays', additionalDays);
                         
                         // Calculate based on discount type
                         if (discountType === 'percentage') {
                             // Calculate discounted price for additional days
                             const discountedDailyRate = basePrice * (1 - (discountValue / 100));
-                            console.log(' discountedDailyRate (percentage)', discountedDailyRate);
+                            // console.log(' discountedDailyRate (percentage)', discountedDailyRate);
                             additionalDaysPrice = discountedDailyRate * additionalDays;
                             
                             // Calculate savings (what full price would have been minus actual price)
@@ -578,7 +578,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         } else {
                             // Fixed discount
                             const discountedDailyRate = Math.max(0, basePrice - discountValue);
-                            console.log(' discountedDailyRate (fixed)', discountedDailyRate);
+                            // console.log(' discountedDailyRate (fixed)', discountedDailyRate);
                             additionalDaysPrice = discountedDailyRate * additionalDays;
                             
                             // Calculate savings (what full price would have been minus actual price)
@@ -587,7 +587,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         
                         // Add to total price
                         totalPrice += additionalDaysPrice;
-                        console.log(' Final totalPrice', totalPrice, 'additionalDaysPrice', additionalDaysPrice, 'savings', savings);
+                        // console.log(' Final totalPrice', totalPrice, 'additionalDaysPrice', additionalDaysPrice, 'savings', savings);
                     }
                     
                     // Format the discount label
@@ -595,7 +595,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ? discountValue + '% הנחה' 
                         : discountValue + ' ₪ הנחה';
                     
-                    console.log(' Building price breakdown HTML with label:', discountLabel);
+                    // console.log(' Building price breakdown HTML with label:', discountLabel);
                     
                     // Format price with Hebrew currency formatter
                     function formatCurrency(amount) {
@@ -619,14 +619,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                     `;
                     
-                    console.log('HTML Generated:', directHtml);
+                    // console.log('HTML Generated:', directHtml);
                     
                     // Remove any existing direct breakdowns first
                     $('.mitnafun-breakdown, .mitnafun-direct-breakdown').remove();
                     
                     // First, check for our container
                     if ($('#price-breakdown-container').length) {
-                        console.log(' Using price-breakdown-container');
+                        // console.log(' Using price-breakdown-container');
                         // Also update our container elements
                         $priceBreakdownList.append(`
                             <li>יום ראשון: ${formatCurrency(basePrice)} (מחיר מלא)</li>
@@ -648,28 +648,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     // Now insert our direct HTML as well, as a fallback
                     // After price amount
                     if ($('.woocommerce-Price-amount').length) {
-                        console.log(' Inserting after .woocommerce-Price-amount');
+                        // console.log(' Inserting after .woocommerce-Price-amount');
                         $('.woocommerce-Price-amount').first().closest('.price').after(directHtml);
                     }
                     // After form-start
                     else if ($('.rental-form-start').length) {
-                        console.log(' Inserting after .rental-form-start');
+                        // console.log(' Inserting after .rental-form-start');
                         $('.rental-form-start').after(directHtml);
                     }
                     // After validation message
                     else if ($('#date-validation-message').length) {
-                        console.log(' Inserting after #date-validation-message');
+                        // console.log(' Inserting after #date-validation-message');
                         $('#date-validation-message').after(directHtml);
                     }
                     // Last resort - after add to cart
                     else if ($('.single_add_to_cart_button').length) {
-                        console.log(' Inserting after .single_add_to_cart_button');
+                        // console.log(' Inserting after .single_add_to_cart_button');
                         $('.single_add_to_cart_button').after(directHtml);
                     } else {
                         console.error(' Could not find insertion point for price breakdown');
                     }
                     
-                    console.log(' Price breakdown update complete');
+                    // console.log(' Price breakdown update complete');
                     
                     // Store calculated values in a data attribute for debugging
                     $('body').attr('data-price-calc', JSON.stringify({
@@ -712,10 +712,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
     // Make sure basePrice is always available globally
     window.basePrice = 550;
-    console.log('🌍 Global basePrice set to:', window.basePrice);
+    // console.log('🌍 Global basePrice set to:', window.basePrice);
     
     // Log other global variables for debugging
-    console.log('🌍 Global variables:', {
+    // console.log('🌍 Global variables:', {
         discountType: window.discountType,
         discountValue: window.discountValue,
         maxRentalDays: window.maxRentalDays
@@ -723,7 +723,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
     // Delay and try to fetch values again for debugging
     setTimeout(function() {
-        console.log('⏱️ After timeout, global variables:', {
+        // console.log('⏱️ After timeout, global variables:', {
             basePrice: window.basePrice,
             discountType: window.discountType,
             discountValue: window.discountValue
@@ -731,7 +731,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         // Try forcing the price breakdown display directly
         if (typeof updatePriceBreakdown === 'function' && window.basePrice) {
-            console.log('🔄 Attempting direct price breakdown update from timer');
+            // console.log('🔄 Attempting direct price breakdown update from timer');
             // Use default values if needed
             const baseP = window.basePrice || 550;
             const days = 2; // Example: 2 days
@@ -892,7 +892,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         // Make discount values available globally
                         window.discountType = 'percentage';
                         window.discountValue = 50;
-                        console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
+                        // console.log('🔄 Setting global discount values:', window.discountType, window.discountValue);
                     </script>
                     
                     <h3>תאריכי השכרה</h3>
@@ -1028,7 +1028,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 
                 try {
                     const nonce = 'eaaccc256a';
-                    console.log('Sending AJAX request...', {
+                    // console.log('Sending AJAX request...', {
                         url: ajaxUrl,
                         action: 'get_rental_debug_info',
                         product_id: productId,
@@ -1046,10 +1046,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         },
                         beforeSend: function() {
                             $('#debug-stock-info').html('<p>טוען נתונים...</p>');
-                            console.log('AJAX Request sent');
+                            // console.log('AJAX Request sent');
                         },
                         success: function(response) {
-                            console.log('AJAX Success:', response);
+                            // console.log('AJAX Success:', response);
                             
                             // Clear previous errors
                             $('.debug-error').remove();
@@ -1165,7 +1165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         $('#reserved-dates-body').html('<tr><td colspan="3" style="text-align: center; padding: 15px; color: #d32f2f;">לא ניתן לטעון נתונים - נא לבדוק את הקונסול לפרטים נוספים</td></tr>');
                     },
                         complete: function() {
-                            console.log('AJAX request completed');
+                            // console.log('AJAX request completed');
                             // Remove loading state
                             $('.debug-loading').remove();
                         }
@@ -1533,7 +1533,7 @@ var the_lmp_js_data = {"type":"more_button","update_url":"1","use_mobile":"","mo
     </script>
         <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('[WEEKEND OVERRIDE] Applying weekend booking fixes');
+        // console.log('[WEEKEND OVERRIDE] Applying weekend booking fixes');
         
         // Specifically fix errors about Saturdays (Shabbat)
         setInterval(function() {
@@ -1549,13 +1549,13 @@ var the_lmp_js_data = {"type":"more_button","update_url":"1","use_mobile":"","mo
         
         // Override the validateDateRange function from fallback-calendar.js
         if (window.originalValidateDateRange === undefined && window.validateDateRange) {
-            console.log('[WEEKEND OVERRIDE] Storing original validateDateRange function');
+            // console.log('[WEEKEND OVERRIDE] Storing original validateDateRange function');
             window.originalValidateDateRange = window.validateDateRange;
         }
         
         // Replace with function that always allows weekends
         window.validateDateRange = function(startDate, endDate) {
-            console.log('[WEEKEND OVERRIDE] Using weekend-friendly validation');
+            // console.log('[WEEKEND OVERRIDE] Using weekend-friendly validation');
             
             if (!startDate || !endDate) {
                 return false;
@@ -1582,7 +1582,7 @@ var the_lmp_js_data = {"type":"more_button","update_url":"1","use_mobile":"","mo
             return true;
         };
         
-        console.log('[WEEKEND OVERRIDE] Weekend booking fixes applied');
+        // console.log('[WEEKEND OVERRIDE] Weekend booking fixes applied');
     });
     </script>
     

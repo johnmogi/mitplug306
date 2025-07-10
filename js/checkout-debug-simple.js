@@ -6,5 +6,5 @@ jQuery(document).ready(function($) {
     </div>').appendTo('body');
 
     // Add a console log
-    console.log('Checkout debug script initialized');
+    // console.log('Checkout debug script initialized');
 });

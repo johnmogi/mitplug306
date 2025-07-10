@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
     }
 
     // Log to console
-    console.log('Debug script loaded successfully');
+    // console.log('Debug script loaded successfully');
 
     // Function to get product ID from cart item
     function getProductId($item) {
@@ -23,14 +23,14 @@ jQuery(document).ready(function($) {
     function processCartItems() {
         const $cartItems = $('.woocommerce-checkout-review-order-table .cart_item');
         if ($cartItems.length === 0) {
-            console.log('No cart items found');
+            // console.log('No cart items found');
             return;
         }
 
         $cartItems.each(function() {
             const $item = $(this);
             const productId = getProductId($item);
-            console.log(`Processing item with product ID: ${productId}`);
+            // console.log(`Processing item with product ID: ${productId}`);
         });
     }
 

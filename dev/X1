@@ -489,7 +489,7 @@ The modal is now created once and reused
 Better handling of modal show/hide states
 Improved loading state management
 Reduced Console Logging:
-Removed unnecessary console.log statements
+Removed unnecessary // console.log statements
 Improved error logging for debugging
 The modal should now work smoothly without flooding the console. Try these steps to test:
 

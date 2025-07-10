@@ -3,7 +3,7 @@
 
     // Initialize when document is ready
     $(function() {
-        console.log('Stock sync script loaded');
+        // console.log('Stock sync script loaded');
         
         // Initialize tooltips
         initTooltips();

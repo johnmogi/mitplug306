@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     // Prevent duplicate execution
     if (window.mitnafunDebugInitialized) {
-        console.log('Mitnafun checkout debug already initialized');
+        // console.log('Mitnafun checkout debug already initialized');
         return;
     }
     window.mitnafunDebugInitialized = true;
@@ -15,7 +15,7 @@ jQuery(document).ready(function($) {
 
     // Log to console for debugging
     console.group('=== Mitnafun Order Admin: Checkout Debug ===');
-    console.log('Debug script loaded successfully');
+    // console.log('Debug script loaded successfully');
     $('#mitnafun-debug-content').append('<p style="color: green;">✓ סקריפט בדיקה נטען בהצלחה</p>');
     
     // Function to get stock information via AJAX
@@ -244,7 +244,7 @@ jQuery(document).ready(function($) {
         const cartItems = document.querySelectorAll('.woocommerce-checkout-review-order-table .cart_item');
         
         if (cartItems.length === 0) {
-            console.log('No cart items found in the DOM');
+            // console.log('No cart items found in the DOM');
             $('#mitnafun-debug-content').append('<p style="color: orange;">⚠️ לא נמצאו פריטים בעגלה</p>');
             console.groupEnd();
             return;
@@ -276,23 +276,23 @@ jQuery(document).ready(function($) {
                 
                 // Log to console
                 console.group(`📦 ${productName}${productId ? ` (ID: ${productId})` : ' (ID: לא נמצא)'}`);
-                console.log('Quantity in cart:', quantity);
-                console.log('Rental Dates:', rentalDates);
+                // console.log('Quantity in cart:', quantity);
+                // console.log('Rental Dates:', rentalDates);
                 
                 // If we have a valid product ID, get stock info (non-blocking)
                 if (productId && !isNaN(productId)) {
                     getProductStockInfo(productId).then(stockInfo => {
                         if (stockInfo) {
                             console.group('Stock Information:');
-                            console.log('Total Stock (_initial_stock):', stockInfo.initial_stock || 'Not set');
-                            console.log('WooCommerce Stock:', stockInfo.wc_stock || 'Not managed');
-                            console.log('Backorders Allowed:', stockInfo.backorders_allowed ? 'Yes' : 'No');
-                            console.log('Stock Status:', stockInfo.stock_status || 'N/A');
+                            // console.log('Total Stock (_initial_stock):', stockInfo.initial_stock || 'Not set');
+                            // console.log('WooCommerce Stock:', stockInfo.wc_stock || 'Not managed');
+                            // console.log('Backorders Allowed:', stockInfo.backorders_allowed ? 'Yes' : 'No');
+                            // console.log('Stock Status:', stockInfo.stock_status || 'N/A');
                             
                             // Calculate available stock
                             if (stockInfo.initial_stock !== undefined) {
                                 const available = stockInfo.initial_stock - (stockInfo.held_stock || 0);
-                                console.log('Available Stock:', available);
+                                // console.log('Available Stock:', available);
                                 
                                 // Check if current cart quantity exceeds available stock
                                 if (quantity > available) {
@@ -329,13 +329,13 @@ jQuery(document).ready(function($) {
     
     // Setup listeners for when cart updates
     $(document.body).on('updated_checkout', function() {
-        console.log('Checkout updated, refreshing debug info');
+        // console.log('Checkout updated, refreshing debug info');
         waitForCheckout(processCartItems);
     });
     
     // Add listener for WooCommerce fragment refresh events
     $(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function() {
-        console.log('WooCommerce fragments updated, refreshing debug info');
+        // console.log('WooCommerce fragments updated, refreshing debug info');
         setTimeout(processCartItems, 500);
     });
     
@@ -357,6 +357,6 @@ jQuery(document).ready(function($) {
         $('#mitnafun-debug-content, #mitnafun-refresh-debug').toggle();
     });
     
-    console.log('Mitnafun checkout debug fully initialized');
+    // console.log('Mitnafun checkout debug fully initialized');
     console.groupEnd(); // End main group
 });
